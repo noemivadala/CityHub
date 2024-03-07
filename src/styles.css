@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#user {
+    width: 600px;
+    height: 90px;
+}
+
+.name-user-active {
+    font-size: 11px;
+    line-height: 0.75rem;
+    padding: 10px;
+}
