@@ -13,6 +13,6 @@ import { NavbarComponent } from "./core/components/navbar.component";
     styles: [],
     imports: [CommonModule, RouterOutlet, NavbarComponent]
 })
-export class AppComponent {
+export default class AppComponent {
   title = 'CityHub';
 }
