@@ -6,13 +6,13 @@ import { NavbarComponent } from "./core/components/navbar.component";
 @Component({
     selector: 'app-root',
     standalone: true,
+    imports: [CommonModule, RouterOutlet, NavbarComponent],
     template: `
-    <app-navbar></app-navbar>
     <router-outlet></router-outlet>
   `,
     styles: [],
-    imports: [CommonModule, RouterOutlet, NavbarComponent]
+
 })
-export default class AppComponent {
+export class AppComponent {
   title = 'CityHub';
 }
