@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
               <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
             </div>
           </div>
-          <div id="info-user" class="inline">
+          <div class="inline w-28">
             <p>{{ user.name }}</p>
             <p>{{ user.gender }}</p>
           </div>

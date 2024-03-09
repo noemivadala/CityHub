@@ -7,12 +7,16 @@ import { HttpClientModule } from '@angular/common/http';
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, RouterOutlet, NavbarComponent, HttpClientModule],
     template: `
-    <router-outlet></router-outlet>
+    <app-navbar></app-navbar>
+    <div class="flex justify-center items-center">
+      <div class="container max-w-screen-xl mt-8 justify-center">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
   `,
     styles: [],
-
+    imports: [CommonModule, RouterOutlet, NavbarComponent, HttpClientModule]
 })
 export class AppComponent {
   title = 'CityHub';

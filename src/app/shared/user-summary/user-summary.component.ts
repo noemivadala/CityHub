@@ -3,21 +3,23 @@ import { User } from '../../models/user';
 import { GorestService } from '../../service/gorest.service';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
-  selector: 'app-active-users',
+  selector: 'app-user-summary',
   standalone: true,
   imports: [CommonModule],
   template: `
-  <h4 class="mb-3 mr-3">Active users</h4>
-    <div class="flex">
-      <div class="mr-3" *ngFor="let user of activeUsers">
-        <div class="avatar online placeholder">
-          <div class="bg-neutral text-neutral-content rounded-md h-14 w-28">
-            <span class="name-user-active"> {{user.name}} </span>
+    <h3>Latest users</h3>
+    <div class="flex" *ngFor="let user of usersSummary">
+        <div id="user" class="flex items-center gap-3">
+          <div class="avatar">
+            <div class="w-12 mask mask-squircle">
+              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            </div>
           </div>
-        </div> 
-      </div>
+          <div class="inline w-28">
+            <p>{{ user.name }}</p>
+          </div>
+        </div>
     </div>
     <div class="flex gap-1 mt-2">
       <a href="users" class="text-xs ml-2">All users</a>
@@ -25,20 +27,19 @@ import { CommonModule } from '@angular/common';
         <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
       </svg>
     </div>
-
-
   `,
   styles: ``
 })
-export class ActiveUsersComponent {
+export class UserSummaryComponent {
 
-  activeUsers: User[] = [];
+  usersSummary: User[] = [];
 
   constructor( private goRest: GorestService ){}
 
   ngOnInit(): void {
     this.goRest.getUsers().subscribe(users => {
-      this.activeUsers = users.filter(user => user.status === 'active').slice(0, 4);;
+      this.usersSummary = users.slice(0, 4);
+      console.log(this.usersSummary)
     });
   }
 
