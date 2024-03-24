@@ -22,7 +22,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         switch (err.status) {
           case 401:
             console.log('non sei autorizzato')
-            router.navigateByUrl('profile')
+            router.navigateByUrl('login')
             break;
         }
       }
