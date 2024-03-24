@@ -22,5 +22,6 @@ import { PostSummaryComponent } from "../../shared/post-summary/post-summary.com
 })
 export default class HomeComponent {
 
+  constructor(){}
 
 }
