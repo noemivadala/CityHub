@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from "./core/components/navbar.component";
 import { HttpClientModule } from '@angular/common/http';
+import { FooterComponent } from "./core/components/footer.component";
 
 @Component({
     selector: 'app-root',
@@ -14,9 +15,10 @@ import { HttpClientModule } from '@angular/common/http';
         <router-outlet></router-outlet>
       </div>
     </div>
+    <app-footer></app-footer>
   `,
     styles: [],
-    imports: [CommonModule, RouterOutlet, NavbarComponent, HttpClientModule]
+    imports: [CommonModule, RouterOutlet, NavbarComponent, HttpClientModule, FooterComponent]
 })
 export class AppComponent {
   title = 'CityHub';

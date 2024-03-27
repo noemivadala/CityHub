@@ -31,4 +31,8 @@ export class GorestService {
     return this.http.get<Post[]>('https://gorest.co.in/public/v2/posts');
   }
 
+  addPost(newPost: Post): Observable<Post[]> {
+    return this.http.post<Post[]>(`https://gorest.co.in/public/v2/users/${newPost.user_id}/posts`, newPost);
+  }
+
 }

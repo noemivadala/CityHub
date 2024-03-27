@@ -11,6 +11,5 @@ export const routes: Routes = [
     { path: 'users', loadComponent: () => import('./features/users/users.component')},
     { path: 'login', loadComponent:() => import('./features/login/login.component') },
     { path: 'profile', loadComponent:() => import('./features/profile/profile.component') },
-    { path: 'user-test', loadComponent:() => import('./core/components/user-test/user-test.component') },
     { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];

@@ -3,14 +3,16 @@ import { GorestService } from '../../service/gorest.service';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
 import { DeleteUserComponent } from "./delete-user.component";
+import { FormsModule } from '@angular/forms';
+import { SearchComponent } from "../../core/components/search.component";
 
 
 @Component({
     selector: 'app-users',
     standalone: true,
-    imports: [CommonModule, DeleteUserComponent],
     template: `
-    <div class="flex my-8 justify-around" *ngFor="let user of users">
+    <app-search (searchChanged)="onSearchChanged($event)"></app-search>
+    <div class="flex my-8 justify-around" *ngFor="let user of filteredUsers">
       <div class="lg:flex lg:items-center lg:justify-between">
         <div class="min-w-0 flex-1">
           <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">{{user.name}}</h2>
@@ -53,10 +55,13 @@ import { DeleteUserComponent } from "./delete-user.component";
     </div>
   `,
     styles: ``,
+    imports: [CommonModule, DeleteUserComponent, FormsModule, SearchComponent]
 })
 export default class UsersComponent {
 
   users: User [] = [];
+  filteredUsers: User[] = [];
+  searchTerm: string = '';
 
   componenteAttivo: boolean = false;
 
@@ -77,8 +82,26 @@ export default class UsersComponent {
           status: user.status,
         };
       });
+      this.filteredUsers = [...this.users];
     });
   }
+
+  onSearchChanged(searchTerm: string) {
+    this.searchTerm = searchTerm;
+    this.filterUsers();
+  }
+
+  filterUsers() {
+    if (this.searchTerm.trim() !== '') {
+      this.filteredUsers = this.users.filter(user =>
+        user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredUsers = [...this.users];
+    }
+  }
+
 
   openUserDetails(id: number | null): void {
     if (id !== null) {

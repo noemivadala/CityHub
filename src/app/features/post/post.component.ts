@@ -2,30 +2,36 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GorestService } from '../../service/gorest.service';
 import { Post } from '../../models/post';
+import { FormsModule } from '@angular/forms';
+import { SearchComponent } from "../../core/components/search.component";
 
 @Component({
-  selector: 'app-post',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
-    <h3 class="text-3xl font-semibold mb-2">Post 👋🏻</h3>
+    selector: 'app-post',
+    standalone: true,
+    template: `
+    <div class="flex justify-between mb-3">
+      <h3 class="text-3xl font-semibold mb-2">Post 👋🏻</h3>
+      <app-search (searchChanged)="onSearchChanged($event)"></app-search>
+      <button class="btn">
+        New Post
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+        </svg>
+      </button>
+    </div>
     <div class="flex flex-wrap gap-3">
-      <div class="shadow-md rounded-md p-5 my-6 max-w-xl" *ngFor="let post of posts">
+      <div class="shadow-md rounded-md p-5 my-6 max-w-xl" *ngFor="let post of filteredPosts">
         <div class="flex items-center gap-5 mb-4 ">
           <div class="avatar">
-            <div class="w-12 rounded-full">
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+            </svg>
           </div>
-          <div class="block">
-            <p class="font-bold mb-1">Chelsea Hagon</p>
-            <p class="font-light text-slate-500 text-xs">December 9 at 11:43 AM</p>
-          </div>
-        </div>
-        <div class="block">
           <h4 class="text-lg font-semibold">
             {{ post.title }}
-          </h4> 
+          </h4>
+        </div>
+        <div class="block">
           <p class="text-base leading-6">
             {{ post.body }}
           </p>
@@ -39,25 +45,44 @@ import { Post } from '../../models/post';
       </div>
     </div>
   `,
-  styles: ``
+    styles: ``,
+    imports: [CommonModule, FormsModule, SearchComponent]
 })
 export default class PostComponent {
 
-  posts: Post [] = [];
+  posts: Post[] = [];
+  filteredPosts: Post[] = [];
+  searchTerm: string = '';
 
-  constructor( private goRest: GorestService){}
+  constructor(private goRest: GorestService) {}
 
   ngOnInit() {
     this.goRest.getPost().subscribe(posts => {
-      this.posts = posts.map(post => {
-        return {
-          id: post.id,
-          user_id: post.user_id,
-          title: post.title,
-          body: post.body,
-        };
-      });
+      this.posts = posts.map(post => ({
+        id: post.id,
+        user_id: post.user_id,
+        title: post.title,
+        body: post.body,
+      }));
+      
+      this.filteredPosts = [...this.posts];
     });
+  }
+
+  onSearchChanged(searchTerm: string) {
+    this.searchTerm = searchTerm;
+    this.filterPosts();
+  }
+
+  filterPosts() {
+    if (this.searchTerm.trim() !== '') {
+      this.filteredPosts = this.posts.filter(post =>
+        post.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        post.body.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredPosts = [...this.posts];
+    }
   }
 
 }
