@@ -4,7 +4,12 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#e5e7eb',
+        secondary: '#1f2937',
+      },
+    },
     fontFamily: {
       'body': ['"Open Sans"'],
     }

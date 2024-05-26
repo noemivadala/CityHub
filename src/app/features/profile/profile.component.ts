@@ -11,7 +11,7 @@ import { UserSummaryComponent } from "../../shared/user-summary/user-summary.com
         <div class="gap-5 mb-4 ">
           <div class="avatar">
             <div class="w-20 rounded-full">
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <img src="https://img.daisyui.com/tailwind-css-component-profile-2@56w.png" />
             </div>
           </div>
           <div>
@@ -34,7 +34,7 @@ import { UserSummaryComponent } from "../../shared/user-summary/user-summary.com
           <div class="flex items-center gap-5 mb-4 ">
             <div class="avatar">
               <div class="w-12 rounded-full">
-                <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                <img src="https://img.daisyui.com/tailwind-css-component-profile-2@56w.png" />
               </div>
             </div>
             <div class="block">

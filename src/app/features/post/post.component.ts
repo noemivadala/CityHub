@@ -4,21 +4,42 @@ import { GorestService } from '../../service/gorest.service';
 import { Post } from '../../models/post';
 import { FormsModule } from '@angular/forms';
 import { SearchComponent } from "../../core/components/search.component";
+import { AddPostComponent } from "./add-post.component";
 
 @Component({
     selector: 'app-post',
     standalone: true,
     template: `
     <div class="flex justify-between mb-3">
-      <h3 class="text-3xl font-semibold mb-2">Post 👋🏻</h3>
-      <app-search (searchChanged)="onSearchChanged($event)"></app-search>
-      <button class="btn">
-        New Post
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-        </svg>
-      </button>
+      <div>
+        <h3 class="text-3xl font-semibold mb-2">Posts 👋🏻</h3>
+      </div>
+      <div>
+        <app-search class="inline-block search-input" (searchChanged)="onSearchChanged($event)"></app-search>
+      </div>
+      <div>
+        <div class="drawer drawer-end">
+          <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
+          <div class="drawer-content">
+            <!-- Page content here -->
+            <label for="my-drawer-4" class="drawer-button btn">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+              </svg>
+              New post
+            </label>
+          </div> 
+          <div class="drawer-side">
+            <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
+            <div class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+              <!-- Sidebar content here -->
+              <app-add-post></app-add-post>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
     <div class="flex flex-wrap gap-3">
       <div class="shadow-md rounded-md p-5 my-6 max-w-xl" *ngFor="let post of filteredPosts">
         <div class="flex items-center gap-5 mb-4 ">
@@ -46,7 +67,7 @@ import { SearchComponent } from "../../core/components/search.component";
     </div>
   `,
     styles: ``,
-    imports: [CommonModule, FormsModule, SearchComponent]
+    imports: [CommonModule, FormsModule, SearchComponent, AddPostComponent]
 })
 export default class PostComponent {
 

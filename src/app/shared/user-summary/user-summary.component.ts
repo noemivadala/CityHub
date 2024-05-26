@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
         <div id="user" class="flex items-center gap-3">
           <div class="avatar">
             <div class="w-12 mask mask-squircle">
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <img src="https://img.daisyui.com/tailwind-css-component-profile-2@56w.png" />
             </div>
           </div>
           <div class="inline w-28">

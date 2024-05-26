@@ -15,7 +15,6 @@ import { FooterComponent } from "./core/components/footer.component";
         <router-outlet></router-outlet>
       </div>
     </div>
-    <app-footer></app-footer>
   `,
     styles: [],
     imports: [CommonModule, RouterOutlet, NavbarComponent, HttpClientModule, FooterComponent]

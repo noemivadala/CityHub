@@ -12,6 +12,26 @@
     }
 }
 
+.check-collapse {
+    --tw-bg-opacity: 1;
+    background-color: #1f2937;
+}
+
+.container-list-users {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 50px auto;
+}
+
+.menu {
+    left: -8px;
+}
+
+.container-user {
+    margin: 20px 20px 20px 0px;
+}
+
 #user {
     width: 600px;
     height: 90px;
@@ -30,4 +50,10 @@
 
 .container-home {
     max-height: 340px;
+}
+
+.search-input {
+    width: 445px;
+    height: 40px; 
+    font-size: 1.2rem; 
 }
