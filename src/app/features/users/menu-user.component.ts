@@ -1,14 +1,17 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import UsersComponent from './users.component';
+import { AddUsersComponent } from './add-users.component';
+import { User } from '../../models/user';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-menu-user',
   standalone: true,
-  imports: [],
+  imports: [AddUsersComponent, CommonModule],
   template: `
     <ul class="menu bg-base-200 rounded-box fixed top-1/2 transform -translate-y-1/2">
       <li>
-        <a class="tooltip tooltip-right" data-tip="Add user">
+        <a class="tooltip tooltip-right" data-tip="Add user" (click)="openAddUser()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           </svg>
@@ -30,6 +33,7 @@ import UsersComponent from './users.component';
         </a>
       </li>
     </ul>
+    <app-add-users *ngIf="showAddUser" (addUserEvent)="addUser($event)"></app-add-users>
   `,
   styles: ``
 })
@@ -41,6 +45,19 @@ export class MenuUserComponent {
   onDetailClicked() {
     this.usersComponent.openAllCollaps();
     console.log('ho cliccato')
+  }
+
+  showAddUser: boolean = false;
+
+  openAddUser() {
+    this.showAddUser = true;
+  }
+
+  addUser(newUser: User) {
+    // Aggiungi il nuovo utente alla tua lista di utenti o invia ad un servizio per l'aggiunta effettiva
+    console.log('Nuovo utente:', newUser);
+    // Chiudi il modulo di aggiunta dell'utente
+    this.showAddUser = false;
   }
 
 }

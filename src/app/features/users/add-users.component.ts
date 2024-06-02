@@ -1,38 +1,57 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { User } from '../../models/user';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-users',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   template: `
-    <h4 class="text-xl font-semibold mb-2">📑 New user</h4>
-    <form>
-        <div class="border-b border-gray-900/10 pb-12">
-          <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div class="col-span-full">
-              <div class="my-2">
-                <input type="text" id="title" name="name" placeholder="Title" class="input w-full max-w-xs" />
-              </div>
-              <div class="my-2">
-                <input id="message" name="email" placeholder="Message" class="input w-full h-20 max-w-xs pt-2">
-              </div>
-              <div class="my-2">
-                <label for="gender" class="block text-sm font-medium">Gender</label>
-                <div class="mt-2">
-                  <select id="gender" name="gender" class="input w-full h-20 max-w-xs pt-2">
-                    <option>Female</option>
-                    <option>Male</option>
-                  </select>
+    <div class="container-user">
+      <div class="lg:flex lg:items-center lg:justify-between">
+        <div>
+          <div class="collapse bg-base-200">
+            <div class="collapse-title bg-primary peer-checked:bg-secondary peer-checked:text-secondary-content">
+              <div class="avatar online placeholder ml-2">
+                <div class="bg-neutral text-neutral-content rounded-full w-8">
+                  <span class="text-xl">+</span>
                 </div>
               </div>
-              <input type="submit" value="Send" class="btn btn-neutral btn-sm mt-3" />
+              <input type="text" placeholder="Name" [(ngModel)]="newUser.name" class="input input-sm" />
+            </div>
+            <div class="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content"> 
+              <input type="text" placeholder="Email" [(ngModel)]="newUser.email" class="input input-sm" />
+              <input type="text" placeholder="Gender" [(ngModel)]="newUser.gender" class="input input-sm" />
+              <button class="btn btn-primary" (click)="addUser()">Add User</button>
             </div>
           </div>
         </div>
-    </form>
+      </div>
+    </div>
+
   `,
   styles: ``
 })
 export class AddUsersComponent {
 
+  @Output() addUserEvent = new EventEmitter<User>();
+
+  newUser: User = {
+    id: null,
+    name: '',
+    email: '',
+    gender: '',
+    status: ''
+  };
+
+  addUser() {
+    this.addUserEvent.emit(this.newUser);
+    this.newUser = {
+      id: null,
+      name: '',
+      email: '',
+      gender: '',
+      status: ''
+    };
+  }
 }
