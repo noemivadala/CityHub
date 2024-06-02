@@ -137,5 +137,11 @@ export default class UsersComponent {
     }
   }
 
+  openAllCollaps() {
+    const collapsItems = document.querySelectorAll('.collapse');
+    collapsItems.forEach(item => {
+      item.classList.toggle('collapse-open');
+    });
+  }
 
 }
