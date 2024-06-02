@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, ElementRef, Renderer2} from '@angular/core';
 import { GorestService } from '../../service/gorest.service';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
@@ -93,7 +93,7 @@ export default class UsersComponent {
 
   selectedUserId: any;
 
-  constructor( private goRest: GorestService, private router: Router ){}
+  constructor( private goRest: GorestService, private router: Router, private renderer: Renderer2, private el: ElementRef ){}
 
   ngOnInit() {
     this.goRest.getUsers().subscribe(users => {
