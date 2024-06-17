@@ -32,25 +32,16 @@ import { FormsModule } from '@angular/forms';
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                     </svg>
-                    <div *ngIf="editFields && user.id === selectedUserId">
-                      <input [(ngModel)]="user.email" style="color:#212121;" class="input input-sm" />
-                    </div>
-                    <div *ngIf="!editFields || user.id !== selectedUserId">
+                    <div>
                       <span>{{ user.email }}</span>
                     </div>
                   </div>
                   <div class="flex">
-                    <button class="btn btn-sm mt-3 ml-1" (click)="editFieldsButton(user.id)">
+                    <button class="btn btn-sm mt-3 ml-1" (click)="viewProfile(user.id)">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                       </svg>
-                      EDIT
-                    </button>
-                    <button *ngIf="editFields && user.id === selectedUserId" class="btn btn-sm mt-3 ml-1" (click)="editFieldsButton(user.id)">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                      </svg>
-                      SAVE
+                      PROFILE
                     </button>
                     <button class="btn btn-sm mt-3 ml-1">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -73,13 +64,8 @@ export class CardUserComponent {
   @Input() selectedUserId: any;
 
 
-  editFieldsButton(userId: any) {
-    if (this.selectedUserId === userId) {
-      this.editFields = !this.editFields;
-    } else {
-      this.selectedUserId = userId;
-      this.editFields = true;
-    }
+  viewProfile(userId: any) {
+    console.log(userId);
   }
 
 }

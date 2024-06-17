@@ -4,7 +4,7 @@ import { PostSummaryComponent } from "../../shared/post-summary/post-summary.com
 import { UserSummaryComponent } from "../../shared/user-summary/user-summary.component";
 
 @Component({
-    selector: 'app-profile',
+    selector: 'app-my-profile',
     standalone: true,
     template: `
     <div class="grid gap-4 grid-cols-2 grid-rows-2 container-home mt-6">
