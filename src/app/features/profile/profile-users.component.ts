@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActiveUsersComponent } from "../users/active-users.component";
 import { GorestService } from '../../service/gorest.service';
 import { User } from '../../models/user';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Post } from '../../models/post';
 
@@ -78,7 +78,7 @@ export default class ProfileUsersComponent implements OnInit {
   user: User | null = null;
   posts: Post[] = [];
 
-  constructor(private route: ActivatedRoute, private goRest: GorestService) { }
+  constructor(private route: ActivatedRoute, private goRest: GorestService, private router: Router) { }
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id');
@@ -100,7 +100,7 @@ export default class ProfileUsersComponent implements OnInit {
     });
   }
 
-  viewComment(postId: number){
-    console.log(postId)
+  viewComment(postId: number) {
+    this.router.navigate(['/post', postId, 'comments']);
   }
 }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { Post } from '../models/post';
+import { Comment } from '../models/comment';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,10 @@ export class GorestService {
 
   addPost(newPost: Post): Observable<Post[]> {
     return this.http.post<Post[]>(`https://gorest.co.in/public/v2/users/${newPost.user_id}/posts`, newPost);
+  }
+
+  getPostComment(postId: number): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`https://gorest.co.in/public/v2/posts/${postId}/comments`);
   }
 
 }
