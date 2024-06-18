@@ -15,8 +15,8 @@ export class GorestService {
     return this.http.get<User[]>('https://gorest.co.in/public/v2/users');
   }
 
-  getDetailUser(id: number): Observable<User[]> {
-    return this.http.get<User[]>( `https://gorest.co.in/public/v2/users/${id}`);
+  getDetailUser(id: number): Observable<User> {
+    return this.http.get<User>( `https://gorest.co.in/public/v2/users/${id}`);
   }
 
   createUser(newUser: User): Observable<User> {

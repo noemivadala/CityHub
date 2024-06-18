@@ -11,6 +11,6 @@ export const routes: Routes = [
     { path: 'users', loadComponent: () => import('./features/users/users.component')},
     { path: 'login', loadComponent:() => import('./features/login/login.component')},
     { path: 'profile', loadComponent:() => import('./features/profile/my-profile.component') },
-    { path: 'profile/user', loadComponent:() => import('./features/profile/profile-users.component') },
+    { path: 'profile/:id', loadComponent:() => import('./features/profile/profile-users.component') },
     { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];

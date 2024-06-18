@@ -1,28 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActiveUsersComponent } from "../users/active-users.component";
 import { GorestService } from '../../service/gorest.service';
 import { User } from '../../models/user';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-profile-users',
     standalone: true,
     template: `
+    <div *ngIf="user">
       <div class="grid gap-4 grid-cols-2 grid-rows-2 container-home mt-6">
         <div class="gap-5 mb-4 ">
-          <div class="avatar">
-            <div class="w-20 rounded-full">
-              <img src="https://img.daisyui.com/tailwind-css-component-profile-2@56w.png" />
+          <div class="avatar placeholder mb-4">
+            <div class="bg-neutral text-neutral-content rounded-full w-12">
+              <span class="text-xl">AI</span>
             </div>
-          </div>
+          </div> 
           <div>
-            <p class="text-xl font-bold mb-1">Titolo</p>
-            <p class="font-light text-slate-500 text-sm">Gender</p>
+            <p class="text-xl font-bold mb-1">{{ user.name }}</p>
+            <p class="font-light text-slate-500 text-sm">{{ user.gender }}</p>
           </div>
           <p class="flex gap-2 items-center mt-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
             </svg>
-            devdan_chaturvedi&#64;stehr-gerlach.example
+            {{ user.email }}
+          </p>
+          <p class="flex gap-2 items-center mt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+            </svg>
+            {{ user.status }}
           </p>
         </div>
       <div>
@@ -52,14 +62,27 @@ import { User } from '../../models/user';
         </div>
       </div>
     </div>
+  </div>
   `,
     styles: ``,
-    imports: [ActiveUsersComponent]
+    imports: [ActiveUsersComponent, CommonModule]
 })
-export default class ProfileUsersComponent {
-  users: User [] = [];
+export default class ProfileUsersComponent implements OnInit {
+  userId: string | null = null;
+  user: User | null = null;
 
-  constructor( private goRest: GorestService ) {}
+  constructor(private route: ActivatedRoute, private goRest: GorestService) { }
 
- 
+  ngOnInit(): void {
+    this.userId = this.route.snapshot.paramMap.get('id');
+    if (this.userId) {
+      this.fetchUserDetails(Number(this.userId));
+    }
+  }
+
+  fetchUserDetails(id: number) {
+    this.goRest.getDetailUser(id).subscribe(response => {
+      this.user = response;
+    });
+  }
 }

@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card-user',
@@ -63,9 +64,10 @@ export class CardUserComponent {
   @Input() editFields: boolean = false;
   @Input() selectedUserId: any;
 
+  constructor(private router: Router) { }
 
   viewProfile(userId: any) {
-    console.log(userId);
+    this.router.navigate(['/profile', userId]);
   }
 
 }
