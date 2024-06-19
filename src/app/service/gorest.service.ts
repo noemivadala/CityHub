@@ -37,7 +37,7 @@ export class GorestService {
   }
 
   getPostsByUser(userId: number): Observable<Post[]> {
-    return this.http.get<Post[]>(`https://gorest.co.in/public/v2/posts?user_id=${userId}`);
+    return this.http.get<Post[]>(`https://gorest.co.in/public/v2/users/${userId}/posts/`);
   }
 
   addPost(newPost: Post): Observable<Post[]> {

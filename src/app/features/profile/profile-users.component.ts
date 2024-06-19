@@ -97,10 +97,13 @@ export default class ProfileUsersComponent implements OnInit {
   fetchUserPosts(userId: number) {
     this.goRest.getPostsByUser(userId).subscribe(response => {
       this.posts = response;
+      console.log(this.posts);
+      console.log(userId);
     });
   }
 
   viewComment(postId: number) {
+    console.log(postId);
     this.router.navigate(['/post', postId, 'comments']);
   }
 }
