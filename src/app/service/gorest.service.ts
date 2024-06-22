@@ -36,6 +36,10 @@ export class GorestService {
     return this.http.get<Post[]>('https://gorest.co.in/public/v2/posts');
   }
 
+  getPostDetail(postId: number): Observable<Post> {
+    return this.http.get<Post>(`https://gorest.co.in/public/v2/posts/${postId}`);
+  }
+
   getPostsByUser(userId: number): Observable<Post[]> {
     return this.http.get<Post[]>(`https://gorest.co.in/public/v2/users/${userId}/posts/`);
   }

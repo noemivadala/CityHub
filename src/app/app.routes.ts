@@ -12,6 +12,6 @@ export const routes: Routes = [
     { path: 'login', loadComponent:() => import('./features/login/login.component')},
     { path: 'profile', loadComponent:() => import('./features/profile/my-profile.component') },
     { path: 'profile/:id', loadComponent:() => import('./features/profile/profile-users.component') },
-    { path: 'post/:id/comments', loadComponent:() => import('./features/comment/comment.component') },
+    { path: 'post/:postId', loadComponent:() => import('./features/comment/comment.component') },
     { path: '', redirectTo: 'home', pathMatch: 'full'}
 ];

@@ -10,17 +10,16 @@ import { Comment } from '../../models/comment';
   standalone: true,
   imports: [ CommonModule ],
   template: `
-    <div *ngIf="post">
-      <h1>{{ post.title }}</h1>
-      <p>{{ post.body }}</p>
+    <div class="post-details">
+      <h2>{{ post?.title }}</h2>
+      <p>{{ post?.body }}</p>
+    </div>
 
-      <div *ngIf="comments.length > 0">
-        <h2>Comments</h2>
-        <div *ngFor="let comment of comments">
-          <h3>{{ comment.name }}</h3>
-          <p>{{ comment.body }}</p>
-          <p><strong>Email:</strong> {{ comment.email }}</p>
-        </div>
+    <div class="comments">
+      <h3>Comments</h3>
+      <div *ngFor="let comment of comments" class="comment">
+        <h4>{{ comment.name }}</h4>
+        <p>{{ comment.body }}</p>
       </div>
     </div>
   `,
@@ -35,7 +34,8 @@ export default class CommentComponent implements OnInit{
   constructor( private goRest: GorestService, private route: ActivatedRoute,){}
 
   ngOnInit(): void {
-    this.postId = Number(this.route.snapshot.paramMap.get('id'));
+    this.postId = Number(this.route.snapshot.paramMap.get('postId'));
+    console.log(this.postId);
     if (this.postId) {
       this.fetchPostDetails(this.postId);
       this.fetchPostComments(this.postId);
@@ -43,8 +43,8 @@ export default class CommentComponent implements OnInit{
   }
 
   fetchPostDetails(postId: number) {
-    this.goRest.getPostsByUser(postId).subscribe(response => {
-      this.post = response.find(post => post.id === postId) || null;
+    this.goRest.getPostDetail(postId).subscribe(response => {
+      this.post = response;
     });
   }
 

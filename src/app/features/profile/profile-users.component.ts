@@ -103,7 +103,6 @@ export default class ProfileUsersComponent implements OnInit {
   }
 
   viewComment(postId: number) {
-    console.log(postId);
-    this.router.navigate(['/post', postId, 'comments']);
+    this.router.navigate(['/post', postId]);
   }
 }
