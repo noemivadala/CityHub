@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
                 <div class="collapse-title bg-primary peer-checked:bg-secondary peer-checked:text-secondary-content">
                   <div [ngClass]="{'online': user.status === 'active', 'offline': user.status === 'inactive'}" class="avatar online placeholder ml-2">
                     <div class="bg-neutral text-neutral-content rounded-full w-8">
-                      <span class="text-xl">AI</span>
+                      <span>{{ getNameLetter(user.name) }}</span>
                     </div>
                   </div>
                   {{user.name}}
@@ -68,6 +68,10 @@ export class CardUserComponent {
 
   viewProfile(userId: any) {
     this.router.navigate(['/profile', userId]);
+  }
+
+  getNameLetter(name: string): string {
+    return name.slice(0, 2).toUpperCase();
   }
 
 }

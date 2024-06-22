@@ -25,7 +25,7 @@ import { CardUserComponent } from "./card-user.component";
 
       <div class="drawer lg:drawer-open gap-8">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col items-center justify-center">
+        <div class="drawer-content flex flex-col items-center">
 
           <div class="container-list-users">
             <app-card-user
@@ -34,6 +34,11 @@ import { CardUserComponent } from "./card-user.component";
               [editFields]="editFields"
               [selectedUserId]="selectedUserId"
             ></app-card-user>
+          </div>
+          <div class="join">
+            <button class="join-item btn">«</button>
+            <button class="join-item btn">Page 22</button>
+            <button class="join-item btn">»</button>
           </div>
         </div> 
 

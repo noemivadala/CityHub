@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Post } from '../../models/post';
 
-
 @Component({
     selector: 'app-profile-users',
     standalone: true,
@@ -72,7 +71,7 @@ import { Post } from '../../models/post';
     imports: [ActiveUsersComponent, CommonModule]
 })
 
-export default class ProfileUsersComponent implements OnInit {
+export default class ProfileUserComponent implements OnInit {
 
   userId: string | null = null; //
   user: User | null = null;
