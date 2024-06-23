@@ -15,7 +15,7 @@ import { Post } from '../../models/post';
         <div class="gap-5 mb-4 ">
           <div class="avatar placeholder mb-4">
             <div class="bg-neutral text-neutral-content rounded-full w-12">
-              <span class="text-xl">AI</span>
+              <span class="text-xl">{{ getNameLetter(user.name) }}</span>
             </div>
           </div> 
           <div>
@@ -103,5 +103,9 @@ export default class ProfileUserComponent implements OnInit {
 
   viewComment(postId: number) {
     this.router.navigate(['/post', postId]);
+  }
+
+  getNameLetter(name: string): string {
+    return name.slice(0, 2).toUpperCase();
   }
 }

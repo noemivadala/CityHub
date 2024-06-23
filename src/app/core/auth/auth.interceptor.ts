@@ -24,6 +24,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             console.log('non sei autorizzato')
             router.navigateByUrl('login')
             break;
+          case 404:
+            console.log('Risorsa non trovata')
+            break;
+          default:
+            console.log('Errore generico', err.status)
+            break;
         }
       }
       return of(err);

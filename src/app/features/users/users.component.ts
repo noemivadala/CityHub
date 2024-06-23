@@ -33,6 +33,7 @@ import { CardUserComponent } from "./card-user.component";
               [user]="user"
               [editFields]="editFields"
               [selectedUserId]="selectedUserId"
+              (onDeleteUser)="onDeleteUser($event)"
             ></app-card-user>
           </div>
           <div class="join">
@@ -137,9 +138,17 @@ export default class UsersComponent {
     });
   }
 
+  onDeleteUser(userId: number) {
+    this.goRest.deleteUser(userId).subscribe(
+      () => {
+        this.filteredUsers = this.filteredUsers.filter(user => user.id !== userId);
+        console.log(`User with ID ${userId} deleted successfully.`);
+      }
+    );
+  }
+
   addUserEvent(){
     this.showAddUser = true;
   }
-
 
 }
