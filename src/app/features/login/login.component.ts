@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +11,7 @@ import { FormsModule } from '@angular/forms';
     <div>
       <h2>Login</h2>
       <input [(ngModel)]="token" placeholder="Enter GoRest Token" />
-      <button (click)="saveToken()">Save Token</button>
+      <button (click)="login()">Save Token</button>
     </div>
   `,
   styles: ``
@@ -17,9 +19,21 @@ import { FormsModule } from '@angular/forms';
 export default class LoginComponent {
 
   token: string = '';
+  error: boolean = false;
 
-  saveToken() {
-    localStorage.setItem('gorest-token', this.token);
+  constructor(private authService: AuthService, private router: Router) {}
+
+  login() {
+    this.authService.validateToken(this.token).subscribe(isValid => {
+      if (isValid) {
+        this.authService.saveToken(this.token);
+        this.router.navigate(['/users']);
+      } else {
+        this.error = true;
+      }
+    });
   }
+
+
 
 }

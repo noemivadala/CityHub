@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -70,8 +71,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class NavbarComponent {
 
+  constructor(private authService: AuthService, private router: Router) {}
+
   removeToken(){
-    localStorage.removeItem('gorest-token');
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
 }

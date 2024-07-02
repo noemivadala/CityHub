@@ -1,16 +1,22 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { Post } from '../models/post';
 import { Comment } from '../models/comment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GorestService {
+  
+  private getHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
 
-  constructor( private http: HttpClient ) { }
+  constructor( private http: HttpClient, private authService: AuthService ) { }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>('https://gorest.co.in/public/v2/users');
@@ -28,8 +34,9 @@ export class GorestService {
     return this.http.put<User[]>( `https://gorest.co.in/public/v2/users/${editUser.id}`, editUser);
   }
 
-  deleteUser(id: number): Observable<User[]> {
-    return this.http.delete<User[]>( `https://gorest.co.in/public/v2/users/${id}`);
+  deleteUser(id: number): Observable<any> {
+    const url = `https://gorest.co.in/public/v2/users/${id}`;
+    return this.http.delete<any>(url, { headers: this.getHeaders() });
   }
 
   getPost(): Observable<Post[]> {
