@@ -35,7 +35,12 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.tokenKey);
+    if (typeof localStorage !== 'undefined') {
+      const token = localStorage.getItem(this.tokenKey);
+      return !!token;
+    } else {
+      return false;
+    }
   }
-  
+
 }

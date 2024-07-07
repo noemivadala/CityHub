@@ -11,7 +11,7 @@
 }
 
 .background {
-    background-image: url('assets/images/background-login.webp');
+    background-image: url('assets/images/background-default.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

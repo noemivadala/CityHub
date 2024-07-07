@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   template: `
   <div class="container container-login">
     <div class="w-full max-w-96 block">
@@ -26,6 +27,9 @@ import { Router } from '@angular/router';
             clip-rule="evenodd" />
         </svg>
       </label>
+      <div *ngIf="token?.length !== 64 && token" class="input-error">
+        Token must be exactly 64 characters long.
+      </div>
       <button class="btn btn-sm" (click)="login()">Enter</button>
     </div>
   </div>

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from "./core/components/navbar.component";
 import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from "./core/components/footer.component";
 import { AuthService } from './service/auth.service';
+import { filter } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -21,9 +22,10 @@ import { AuthService } from './service/auth.service';
     imports: [CommonModule, RouterOutlet, NavbarComponent, HttpClientModule, FooterComponent]
 })
 export class AppComponent {
+
   title = 'CityHub';
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, private router: Router){}
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
