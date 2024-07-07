@@ -4,13 +4,14 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from "./core/components/navbar.component";
 import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from "./core/components/footer.component";
+import { AuthService } from './service/auth.service';
 
 @Component({
     selector: 'app-root',
     standalone: true,
     template: `
-    <app-navbar></app-navbar>
-    <div class="flex justify-center items-center">
+    <app-navbar *ngIf="isLoggedIn()"></app-navbar>
+    <div class="flex justify-center items-center background">
       <div class="container max-w-screen-xl mt-8 justify-center">
         <router-outlet></router-outlet>
       </div>
@@ -21,4 +22,11 @@ import { FooterComponent } from "./core/components/footer.component";
 })
 export class AppComponent {
   title = 'CityHub';
+
+  constructor(private authService: AuthService){}
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
 }

@@ -2,14 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    @font-face {
-      font-family: 'Roboto';
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: url(/fonts/Roboto.woff2) format('woff2');
-    }
+.container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding-left: 20px;
+}
+
+.background {
+    background-image: url('assets/images/background-login.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+h1 {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 2rem;
 }
 
 .check-collapse {
