@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -27,10 +28,14 @@ import { CommonModule } from '@angular/common';
             clip-rule="evenodd" />
         </svg>
       </label>
-      <div *ngIf="token?.length !== 64 && token" class="input-error">
+      <div *ngIf="token?.length !== 64 && token" class="input-error mb-3 text-sm">
         Token must be exactly 64 characters long.
       </div>
       <button class="btn btn-sm" (click)="login()">Enter</button>
+
+      <div *ngIf="error" class="input-error mt-3 text-sm">
+        Invalid password
+      </div>
     </div>
   </div>
   
@@ -41,20 +46,21 @@ export default class LoginComponent {
 
   token: string = '';
   error: boolean = false;
+  errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    this.authService.validateToken(this.token).subscribe(isValid => {
-      if (isValid) {
-        this.authService.saveToken(this.token);
-        this.router.navigate(['/users']);
-      } else {
-        this.error = true;
+    this.authService.validateToken(this.token).subscribe(
+      isValid => {
+        if (isValid) {
+          this.authService.saveToken(this.token);
+          this.router.navigate(['/users']);
+        } else {
+          this.error = true;
+          this.token = '';
+        }
       }
-    });
+    );
   }
-
-
-
 }

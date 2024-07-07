@@ -25,6 +25,10 @@ h1 {
     font-size: 2rem;
 }
 
+.input-error {
+    color: #c1121f;
+}
+
 .check-collapse {
     --tw-bg-opacity: 1;
     background-color: #1f2937;

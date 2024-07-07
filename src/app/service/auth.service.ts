@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -25,7 +25,12 @@ export class AuthService {
       params: { 'access-token': token }
     }).pipe(
       map(response => true),
-      catchError(() => of(false))
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          return of(false);
+        }
+        throw error;
+      })
     );
   }
 
