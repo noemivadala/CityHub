@@ -25,7 +25,7 @@ export class AppComponent {
 
   title = 'CityHub';
 
-  constructor(private authService: AuthService, private router: Router){}
+  constructor(private authService: AuthService){}
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();

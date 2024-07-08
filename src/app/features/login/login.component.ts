@@ -3,14 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
-  <div class="container container-login">
+  <ng-container *ngIf="!isLoggedIn(); else welcome" class="container container-login">
     <div class="w-full max-w-96 block">
       <h2 class="text-xs">SIGN IN</h2>
       <h1 class="mb-2">Access Your Account.</h1>
@@ -37,7 +36,11 @@ import { HttpErrorResponse } from '@angular/common/http';
         Invalid password
       </div>
     </div>
-  </div>
+  </ng-container>
+  <ng-template #welcome>
+    <h1 class="mb-2">Welcome, you are logged in!</h1>
+    <button class="btn btn-sm" (click)="removeToken()">Logout</button>
+  </ng-template>
   
   `,
   styles: ``
@@ -62,5 +65,14 @@ export default class LoginComponent {
         }
       }
     );
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  removeToken(){
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
