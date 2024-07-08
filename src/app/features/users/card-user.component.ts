@@ -65,7 +65,7 @@ export class CardUserComponent {
   @Input() user!: User;
   @Input() editFields: boolean = false;
   @Input() selectedUserId: any;
-  @Output() onDeleteUser: EventEmitter<number> = new EventEmitter<number>();
+  @Output() userDeleted = new EventEmitter<number>();
 
   constructor(private router: Router, private goRest: GorestService) { }
 
@@ -76,8 +76,8 @@ export class CardUserComponent {
   deleteClicked(userId: any) {
     this.goRest.deleteUser(userId).subscribe(
       () => {
-        this.onDeleteUser.emit(userId); // Emetti l'evento onDeleteUser con l'ID dell'utente
         console.log(`User with ID ${userId} deleted successfully.`);
+        this.userDeleted.emit(userId);
       }
     );
   }

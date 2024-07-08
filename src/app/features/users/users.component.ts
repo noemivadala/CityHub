@@ -33,7 +33,7 @@ import { CardUserComponent } from "./card-user.component";
               [user]="user"
               [editFields]="editFields"
               [selectedUserId]="selectedUserId"
-              (onDeleteUser)="onDeleteUser($event)"
+              (userDeleted)="handleUserDeleted($event)"
             ></app-card-user>
           </div>
           <div class="join">
@@ -56,7 +56,7 @@ import { CardUserComponent } from "./card-user.component";
                   Add user
                 </div>
                 <div class="collapse-content"> 
-                  <app-add-users></app-add-users>
+                  <app-add-users (userAdded)="handleUserAdded($event)"></app-add-users>
                 </div>
               </div>
 
@@ -84,6 +84,7 @@ export default class UsersComponent {
   searchTerm: string = '';
   editFields: boolean = true;
   selectedUserId: any;
+  newUser: User = { id: 0, name: '', email: '', gender: 'Male', status: 'active' };
 
   constructor( private goRest: GorestService, private router: Router, private renderer: Renderer2, private el: ElementRef ){}
 
@@ -118,7 +119,6 @@ export default class UsersComponent {
     }
   }
 
-
   openAllCollaps() {
     const checkboxes = document.querySelectorAll('.collapse-user input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
     const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
@@ -127,28 +127,19 @@ export default class UsersComponent {
     });
   }
   
-
   showAddUser = false;
-
-  addUser(newUser: User) {
-    this.goRest.createUser(newUser).subscribe((createdUser: User) => {
-      this.users.push(createdUser);
-      this.filteredUsers = [...this.users];
-      this.showAddUser = false;
-    });
-  }
-
-  onDeleteUser(userId: number) {
-    this.goRest.deleteUser(userId).subscribe(
-      () => {
-        this.filteredUsers = this.filteredUsers.filter(user => user.id !== userId);
-        console.log(`User with ID ${userId} deleted successfully.`);
-      }
-    );
-  }
 
   addUserEvent(){
     this.showAddUser = true;
   }
 
+  handleUserDeleted(id: number): void {
+    this.filteredUsers = this.filteredUsers.filter(user => user.id !== id);
+    this.users = this.users.filter(user => user.id !== id);
+  }
+
+  handleUserAdded(user: User): void {
+    this.users.unshift(user);
+    this.filteredUsers = [...this.users];
+  }
 }

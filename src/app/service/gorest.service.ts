@@ -27,11 +27,8 @@ export class GorestService {
   }
 
   createUser(newUser: User): Observable<User> {
-    return this.http.post<User>('https://gorest.co.in/public/v2/users', newUser);
-  }
-  
-  editUser(editUser: User): Observable<User[]> {
-    return this.http.put<User[]>( `https://gorest.co.in/public/v2/users/${editUser.id}`, editUser);
+    const url = `https://gorest.co.in/public/v2/users/`;
+    return this.http.post<User>(url, newUser, { headers: this.getHeaders() });
   }
 
   deleteUser(id: number): Observable<any> {
