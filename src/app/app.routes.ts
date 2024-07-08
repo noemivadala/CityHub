@@ -7,5 +7,5 @@ export const routes: Routes = [
     { path: 'login', loadComponent:() => import('./features/login/login.component')},
     { path: 'profile/:id', loadComponent:() => import('./features/users/profile-user.component') },
     { path: 'post/:postId', loadComponent:() => import('./features/comment/comment.component') },
-    { path: '', redirectTo: 'users', pathMatch: 'full'}
+    { path: '', redirectTo: 'login', pathMatch: 'full'}
 ];
