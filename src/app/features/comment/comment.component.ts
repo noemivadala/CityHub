@@ -43,7 +43,6 @@ import { AddCommentComponent } from "./add-comment.component";
             </div>
             <h4>{{ comment.name }}</h4>
           </div>
-
             <p>{{ comment.body }}</p>
           </div>
         </div>
@@ -51,7 +50,7 @@ import { AddCommentComponent } from "./add-comment.component";
 
       <div class="add-component">
         <h3 class="mb-3">Add comment</h3>
-        <app-add-comment></app-add-comment>
+        <app-add-comment [postId]="postId!" (commentAdded)="CommentAdd($event)"></app-add-comment>
       </div>
     </div>
   `,
@@ -87,8 +86,12 @@ export default class CommentComponent implements OnInit{
     });
   }
 
+  CommentAdd(comment: Comment) {
+    this.comments.push(comment);
+  }
+
   getNameLetter(name: string): string {
-    return name.charAt(0);
+    return name.charAt(0).toUpperCase();
   }
 
 }
