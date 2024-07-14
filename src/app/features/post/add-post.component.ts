@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Post } from '../../models/post';
+import { GorestService } from '../../service/gorest.service';
 
 @Component({
   selector: 'app-add-post',
@@ -25,5 +27,13 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class AddPostComponent {
+  @Output() postAdded = new EventEmitter<Post>();
+
+  newPost: Post = {
+    user_id: 1, title: '', body: '',
+    id: 0
+  };
+
+  constructor(private goRest: GorestService) {}
 
 }

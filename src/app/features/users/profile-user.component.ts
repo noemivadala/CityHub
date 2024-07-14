@@ -10,6 +10,7 @@ import { Post } from '../../models/post';
     selector: 'app-profile-users',
     standalone: true,
     template: `
+    <button class="btn btn-sm">Back to list</button>
     <div *ngIf="user">
       <div class="grid gap-4 grid-cols-2 grid-rows-2 container-home mt-6">
         <div class="gap-5 mb-4 ">

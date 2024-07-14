@@ -41,19 +41,24 @@ export class GorestService {
   }
 
   getPostDetail(postId: number): Observable<Post> {
-    return this.http.get<Post>(`https://gorest.co.in/public/v2/posts/${postId}`);
+    return this.http.get<Post>(`https://gorest.co.in/public/v2/posts/${postId}`, { headers: this.getHeaders() });
   }
 
   getPostsByUser(userId: number): Observable<Post[]> {
     return this.http.get<Post[]>(`https://gorest.co.in/public/v2/users/${userId}/posts/`);
   }
 
-  addPost(newPost: Post): Observable<Post[]> {
-    return this.http.post<Post[]>(`https://gorest.co.in/public/v2/users/${newPost.user_id}/posts`, newPost);
+  addPost(newPost: Post): Observable<Post> {
+    const url = `https://gorest.co.in/public/v2/users/${newPost.user_id}/posts`;
+    return this.http.post<Post>(url, newPost, { headers: this.getHeaders() });
   }
 
   getPostComment(postId: number): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`https://gorest.co.in/public/v2/posts/${postId}/comments`);
+    return this.http.get<Comment[]>(`https://gorest.co.in/public/v2/posts/${postId}/comments`, { headers: this.getHeaders() });
+  }
+
+  addComment(postId: number, comment: Comment): Observable<Comment> {
+    return this.http.post<Comment>(`https://gorest.co.in/public/v2/posts/${postId}/comments`, comment, { headers: this.getHeaders() });
   }
 
 }
