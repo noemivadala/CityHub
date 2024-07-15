@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
         placeholder="Text"
         class="textarea textarea-bordered textarea-xs w-full max-w-xs">
       </textarea>
-      <button (click)="onSubmit()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full">
+      <button (click)="addPost()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full">
         Add
       </button>
     </div>
@@ -22,21 +22,19 @@ import { FormsModule } from '@angular/forms';
   styles: ``
 })
 export class AddPostComponent {
-  @Output() postAdded = new EventEmitter<Post>();
 
-  newPost: Post = {
-    user_id: 1, 
-    title: '', 
-    body: '',
-    id: 0
-  };
+  newPost: Post = { id: 0, user_id: 0, title: '', body: '' };
+
+  @Output() postAdded = new EventEmitter<Post>();
 
   constructor(private goRest: GorestService) {}
 
-  onSubmit() {
-    this.goRest.addPost(this.newPost).subscribe(post => {
-      this.postAdded.emit(post);
-      this.newPost = { user_id: 1, title: '', body: '', id: 0 };
+  addPost(): void {
+    this.goRest.addPost(this.newPost).subscribe(user => {
+      this.postAdded.emit(user);
+      this.newPost = { id: 0, user_id: 0, title: '', body: '' };
+    }, error => {
+      console.error('Error adding user:', error);
     });
   }
 
