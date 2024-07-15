@@ -1,28 +1,23 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Post } from '../../models/post';
 import { GorestService } from '../../service/gorest.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-post',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   template: `
-    <h4 class="text-xl font-semibold mb-2">📑 New post</h4>
-    <form>
-        <div class="border-b border-gray-900/10 pb-12">
-          <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div class="col-span-full">
-              <div class="my-2">
-                <input type="text" id="title" name="title" placeholder="Title" class="input w-full max-w-xs" />
-              </div>
-              <div class="my-2">
-                <textarea id="message" name="message" placeholder="Message" class="input w-full h-20 max-w-xs pt-2"></textarea>
-              </div>
-              <input type="submit" value="Send" class="btn btn-neutral btn-sm mt-3" />
-            </div>
-          </div>
-        </div>
-    </form>
+    <div class="mb-2">
+      <input type="text" placeholder="Title" class="input input-bordered input-xs w-full max-w-xs mb-2" />
+      <textarea
+        placeholder="Text"
+        class="textarea textarea-bordered textarea-xs w-full max-w-xs">
+      </textarea>
+      <button (click)="onSubmit()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full">
+        Add
+      </button>
+    </div>
   `,
   styles: ``
 })
@@ -30,10 +25,19 @@ export class AddPostComponent {
   @Output() postAdded = new EventEmitter<Post>();
 
   newPost: Post = {
-    user_id: 1, title: '', body: '',
+    user_id: 1, 
+    title: '', 
+    body: '',
     id: 0
   };
 
   constructor(private goRest: GorestService) {}
+
+  onSubmit() {
+    this.goRest.addPost(this.newPost).subscribe(post => {
+      this.postAdded.emit(post);
+      this.newPost = { user_id: 1, title: '', body: '', id: 0 };
+    });
+  }
 
 }

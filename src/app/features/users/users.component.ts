@@ -17,8 +17,14 @@ import { CardUserComponent } from "./card-user.component";
         <div>
           <h3 class="text-3xl font-semibold mb-2">Users</h3>
         </div>
-        <div>
+        <div class="flex gap-2">
           <app-search class="inline-block search-input"(searchChanged)="onSearchChanged($event)"></app-search>
+          <select class="select select-bordered max-w-xs">
+            <option disabled selected>View</option>
+            <option>6</option>
+            <option>8</option>
+            <option>20</option>
+          </select>
         </div>
       </div>
       <app-add-users *ngIf="showAddUser"></app-add-users>
@@ -35,11 +41,6 @@ import { CardUserComponent } from "./card-user.component";
               [selectedUserId]="selectedUserId"
               (userDeleted)="handleUserDeleted($event)"
             ></app-card-user>
-          </div>
-          <div class="join">
-            <button class="join-item btn">«</button>
-            <button class="join-item btn">Page 22</button>
-            <button class="join-item btn">»</button>
           </div>
         </div> 
 
@@ -85,6 +86,11 @@ export default class UsersComponent {
   editFields: boolean = true;
   selectedUserId: any;
   newUser: User = { id: 0, name: '', email: '', gender: 'Male', status: 'active' };
+  pageNumber: number = 1;
+  pageSize: number = 10; ///pred
+  totalUsers: number = 0;
+  totalPages: number = 0;
+  pageSizeOptions: number[] = [6, 8, 10]; //opz
 
   constructor( private goRest: GorestService, private router: Router, private renderer: Renderer2, private el: ElementRef ){}
 
