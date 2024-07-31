@@ -17,14 +17,8 @@ import { CardUserComponent } from "./card-user.component";
         <div>
           <h3 class="text-3xl font-semibold mb-2">Users</h3>
         </div>
-        <div class="flex gap-2">
-          <app-search class="inline-block search-input"(searchChanged)="onSearchChanged($event)"></app-search>
-          <select class="select select-bordered max-w-xs">
-            <option disabled selected>View</option>
-            <option>6</option>
-            <option>8</option>
-            <option>20</option>
-          </select>
+        <div>
+          <app-search class="inline-block search-input" (searchChanged)="onSearchChanged($event)"></app-search>
         </div>
       </div>
       <app-add-users *ngIf="showAddUser"></app-add-users>
@@ -41,6 +35,15 @@ import { CardUserComponent } from "./card-user.component";
               [selectedUserId]="selectedUserId"
               (userDeleted)="handleUserDeleted($event)"
             ></app-card-user>
+          </div>
+          <div class="join">
+          <button 
+            *ngFor="let page of [].constructor(totalPages); let i = index" 
+            class="join-item btn btn-xs" 
+            [ngClass]="{'btn-active': currentPage === i + 1}"
+            (click)="onPageChange(i + 1)">
+            {{ i + 1 }}
+          </button>
           </div>
         </div> 
 
@@ -82,15 +85,16 @@ export default class UsersComponent {
 
   users: User [] = [];
   filteredUsers: User[] = [];
+  currentPage: number = 1;
+  //numero utenti visibili
+  pageSize: number = 6;
+  totalPages: number = 0;
   searchTerm: string = '';
+  
   editFields: boolean = true;
   selectedUserId: any;
   newUser: User = { id: 0, name: '', email: '', gender: 'Male', status: 'active' };
-  pageNumber: number = 1;
-  pageSize: number = 10; ///pred
-  totalUsers: number = 0;
-  totalPages: number = 0;
-  pageSizeOptions: number[] = [6, 8, 10]; //opz
+
 
   constructor( private goRest: GorestService, private router: Router, private renderer: Renderer2, private el: ElementRef ){}
 
@@ -105,8 +109,33 @@ export default class UsersComponent {
           status: user.status,
         };
       });
-      this.filteredUsers = [...this.users];
+      this.totalPages = Math.ceil(this.users.length / this.pageSize);
+      //chiama funzione primi risultati
+      this.updateFilteredUsers();
     });
+  }
+
+  //aggiorna utenti pagina corrente
+  updateFilteredUsers() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.filteredUsers = this.users.slice(startIndex, endIndex);
+  }
+
+  //cambiamento pagina
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.updateFilteredUsers();
+  }
+
+  //eliminazione utente e aggiornamento pagina
+  handleUserDeleted(userId: number) {
+    this.users = this.users.filter(user => user.id !== userId);
+    this.totalPages = Math.ceil(this.users.length / this.pageSize);
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages;
+    }
+    this.updateFilteredUsers();
   }
 
   onSearchChanged(searchTerm: string) {
@@ -137,11 +166,6 @@ export default class UsersComponent {
 
   addUserEvent(){
     this.showAddUser = true;
-  }
-
-  handleUserDeleted(id: number): void {
-    this.filteredUsers = this.filteredUsers.filter(user => user.id !== id);
-    this.users = this.users.filter(user => user.id !== id);
   }
 
   handleUserAdded(user: User): void {

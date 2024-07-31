@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActiveUsersComponent } from "../users/active-users.component";
 import { GorestService } from '../../service/gorest.service';
 import { User } from '../../models/user';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Post } from '../../models/post';
 
@@ -10,7 +9,7 @@ import { Post } from '../../models/post';
     selector: 'app-profile-users',
     standalone: true,
     template: `
-    <button class="btn btn-sm">Back to list</button>
+    <button class="btn btn-sm" [routerLink]="['/users']">Back to list</button>
     <div *ngIf="user">
       <div class="grid gap-4 grid-cols-2 grid-rows-2 container-home mt-6">
         <div class="gap-5 mb-4 ">
@@ -69,7 +68,7 @@ import { Post } from '../../models/post';
   </div>
   `,
     styles: ``,
-    imports: [ActiveUsersComponent, CommonModule]
+    imports: [CommonModule, RouterModule]
 })
 
 export default class ProfileUserComponent implements OnInit {
