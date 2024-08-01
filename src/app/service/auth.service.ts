@@ -12,12 +12,29 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  //se è disponibile
+  private isLocalStorageAvailable(): boolean {
+    try {
+      const testKey = '__test__';
+      localStorage.setItem(testKey, testKey);
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   saveToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
+    if (this.isLocalStorageAvailable()) {
+      localStorage.setItem(this.tokenKey, token);
+    }
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    if (this.isLocalStorageAvailable()) {
+      return localStorage.getItem(this.tokenKey);
+    }
+    return null;
   }
 
   validateToken(token: string): Observable<boolean> {
@@ -35,17 +52,18 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
+    if (this.isLocalStorageAvailable()) {
+      localStorage.removeItem(this.tokenKey);
+    }
     this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {
-    if (typeof localStorage !== 'undefined') {
+    if (this.isLocalStorageAvailable()) {
       const token = localStorage.getItem(this.tokenKey);
       return !!token;
-    } else {
-      return false;
     }
+    return false;
   }
 
 }
