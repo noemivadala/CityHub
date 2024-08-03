@@ -9,6 +9,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 export class AuthService {
 
   private tokenKey = 'gorest-token';
+  private userIdKey = 'gorest-user-id';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -24,12 +25,14 @@ export class AuthService {
     }
   }
 
+  // salvo il token
   saveToken(token: string): void {
     if (this.isLocalStorageAvailable()) {
       localStorage.setItem(this.tokenKey, token);
     }
   }
 
+  // recupero il token
   getToken(): string | null {
     if (this.isLocalStorageAvailable()) {
       return localStorage.getItem(this.tokenKey);
@@ -37,11 +40,41 @@ export class AuthService {
     return null;
   }
 
+
+  // salvo l'user_id
+  saveUserId(userId: number): void {
+    if (this.isLocalStorageAvailable()) {
+      localStorage.setItem(this.userIdKey, userId.toString());
+    }
+  }
+
+  getUserId(): number {
+    if (this.isLocalStorageAvailable()) {
+      const userId = localStorage.getItem(this.userIdKey);
+      return userId ? parseInt(userId, 10) : this.generateRandomUserId();
+    }
+    return this.generateRandomUserId();
+  }
+
+  generateRandomUserId(): number {
+    return Math.floor(Math.random() * 10000) + 1;
+  }
+
   validateToken(token: string): Observable<boolean> {
-    return this.http.get('https://gorest.co.in/public/v2/users', {
+    return this.http.get<any[]>('https://gorest.co.in/public/v2/users', {
       params: { 'access-token': token }
     }).pipe(
-      map(response => true),
+      map((response: any[]) => {
+        if (response.length > 0) {
+          const userId = response[0]?.id;
+          if (userId) {
+            this.saveUserId(userId); // salvataggio user_id
+            return true;
+          }
+        }
+        console.error('No valid user ID found in the response.');
+        return false;
+      }),
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           return of(false);
@@ -54,6 +87,7 @@ export class AuthService {
   logout(): void {
     if (this.isLocalStorageAvailable()) {
       localStorage.removeItem(this.tokenKey);
+      localStorage.removeItem(this.userIdKey);
     }
     this.router.navigate(['/login']);
   }
