@@ -8,16 +8,12 @@ import { AddPostComponent } from "./add-post.component";
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-post',
+    selector: 'app-list-post',
     standalone: true,
     template: `
-    <div class="flex justify-between mb-3">
-      <div>
-        <h3 class="text-3xl font-semibold mb-2">Post 👋🏻</h3>
-      </div>
-      <div>
-        <app-search class="inline-block search-input" (searchChanged)="onSearchChanged($event)"></app-search>
-      </div>
+    <div class="flex mb-3 gap-2 items-center">
+      <h3 class="text-3xl font-semibold mb-2">Posts</h3>
+      <app-search class="inline-block search-input" (searchChanged)="onSearchChanged($event)"></app-search>
     </div>
 
     <div class="drawer lg:drawer-open">
@@ -73,7 +69,7 @@ import { Router } from '@angular/router';
     styles: ``,
     imports: [CommonModule, FormsModule, SearchComponent, AddPostComponent]
 })
-export default class PostComponent {
+export default class ListPostComponent {
 
   posts: Post[] = [];
   filteredPosts: Post[] = [];

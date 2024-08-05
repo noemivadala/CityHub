@@ -73,7 +73,7 @@ import { Post } from '../../models/post';
 
 export default class ProfileUserComponent implements OnInit {
 
-  userId: string | null = null; //
+  userId: string | null = null;
   user: User | null = null;
   posts: Post[] = [];
 

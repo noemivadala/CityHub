@@ -13,68 +13,65 @@ import { CardUserComponent } from "./card-user.component";
     selector: 'app-users',
     standalone: true,
     template: `
-      <div class="flex justify-between mb-3">
-        <div>
-          <h3 class="text-3xl font-semibold mb-2">Users</h3>
-        </div>
-        <div>
-          <app-search class="inline-block search-input" (searchChanged)="onSearchChanged($event)"></app-search>
-        </div>
+      <div class="flex mb-3 gap-2 items-center">
+        <h3 class="text-3xl font-semibold mb-2">Users</h3>
+        <app-search class="inline-block" (searchChanged)="onSearchChanged($event)"></app-search>
       </div>
-      <app-add-users *ngIf="showAddUser"></app-add-users>
 
-      <div class="drawer lg:drawer-open gap-8">
-        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col items-center">
+      <div>
+        <app-add-users *ngIf="showAddUser"></app-add-users>
+        <div class="drawer lg:drawer-open gap-8">
+          <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+          <div class="drawer-content flex flex-col items-center">
 
-          <div class="container-list-users">
-            <app-card-user
-              *ngFor="let user of filteredUsers"
-              [user]="user"
-              [editFields]="editFields"
-              [selectedUserId]="selectedUserId"
-              (userDeleted)="handleUserDeleted($event)"
-            ></app-card-user>
-          </div>
-          <div class="join">
-          <button 
-            *ngFor="let page of [].constructor(totalPages); let i = index" 
-            class="join-item btn btn-xs" 
-            [ngClass]="{'btn-active': currentPage === i + 1}"
-            (click)="onPageChange(i + 1)">
-            {{ i + 1 }}
-          </button>
-          </div>
-        </div> 
+            <div class="container-list-users">
+              <app-card-user
+                *ngFor="let user of filteredUsers"
+                [user]="user"
+                [editFields]="editFields"
+                [selectedUserId]="selectedUserId"
+                (userDeleted)="handleUserDeleted($event)"
+              ></app-card-user>
+            </div>
+            <div class="join">
+            <button 
+              *ngFor="let page of [].constructor(totalPages); let i = index" 
+              class="join-item btn btn-xs" 
+              [ngClass]="{'btn-active': currentPage === i + 1}"
+              (click)="onPageChange(i + 1)">
+              {{ i + 1 }}
+            </button>
+            </div>
+          </div> 
 
-        <div class="drawer-side">
-          <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label> 
+          <div class="drawer-side">
+            <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label> 
 
-          <div class="menu p-4 w-60 min-h-full text-base-content">
-              <div class="collapse bg-base-200">
-                <input type="checkbox" /> 
-                <div class="collapse-title flex gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            <div class="menu p-4 w-60 min-h-full text-base-content">
+                <div class="collapse bg-base-200">
+                  <input type="checkbox" /> 
+                  <div class="collapse-title flex gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    Add user
+                  </div>
+                  <div class="collapse-content"> 
+                    <app-add-users (userAdded)="handleUserAdded($event)"></app-add-users>
+                  </div>
+                </div>
+
+              <li>
+                <a (click)="openAllCollaps()">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-5 w-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   </svg>
-                  Add user
-                </div>
-                <div class="collapse-content"> 
-                  <app-add-users (userAdded)="handleUserAdded($event)"></app-add-users>
-                </div>
-              </div>
-
-            <li>
-              <a (click)="openAllCollaps()">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-5 w-5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-                <p>View details</p>
-              </a>
-            </li>
+                  <p>View details</p>
+                </a>
+              </li>
+            </div>
           </div>
-        
         </div>
       </div>
   `,

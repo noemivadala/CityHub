@@ -28,6 +28,7 @@ import { AuthService } from '../../service/auth.service';
   `,
   styles: ``
 })
+
 export class AddPostComponent {
 
   newPost: Post = { user_id: 0, title: '', body: '' };
@@ -38,7 +39,7 @@ export class AddPostComponent {
 
   addPost(): void {
     const userId = this.authService.getUserId();
-
+    
     this.newPost.user_id = userId as number;
 
     this.goRest.addPost(this.newPost).subscribe(user => {
@@ -48,5 +49,5 @@ export class AddPostComponent {
       console.error('Error adding post:', error);
     });
   }
-
+  
 }
