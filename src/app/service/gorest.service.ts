@@ -18,12 +18,13 @@ export class GorestService {
 
   constructor( private http: HttpClient, private authService: AuthService ) { }
 
+  //user
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>('https://gorest.co.in/public/v2/users');
+    return this.http.get<User[]>('https://gorest.co.in/public/v2/users', { headers: this.getHeaders() });
   }
 
   getDetailUser(id: number): Observable<User> {
-    return this.http.get<User>( `https://gorest.co.in/public/v2/users/${id}`);
+    return this.http.get<User>(`https://gorest.co.in/public/v2/users/${id}`, { headers: this.getHeaders() });
   }
 
   createUser(newUser: User): Observable<User> {
@@ -36,12 +37,13 @@ export class GorestService {
     return this.http.delete<any>(url, { headers: this.getHeaders() });
   }
 
+  //post
   getPost(): Observable<Post[]> {
-    return this.http.get<Post[]>('https://gorest.co.in/public/v2/posts');
+    return this.http.get<Post[]>('https://gorest.co.in/public/v2/posts', { headers: this.getHeaders() });
   }
 
   getPostsByUser(userId: number): Observable<Post[]> {
-    return this.http.get<Post[]>(`https://gorest.co.in/public/v2/users/${userId}/posts/`);
+    return this.http.get<Post[]>(`https://gorest.co.in/public/v2/users/${userId}/posts/`, { headers: this.getHeaders() });
   }
 
   addPost(newPost: Post): Observable<Post> {
@@ -54,6 +56,7 @@ export class GorestService {
     return this.http.get<Post>(url, { headers: this.getHeaders() });
   }
 
+  //comment
   getPostComment(postId: number): Observable<Comment[]> {
     const url = `https://gorest.co.in/public/v2/posts/${postId}/comments`;
     return this.http.get<Comment[]>(url, { headers: this.getHeaders() });

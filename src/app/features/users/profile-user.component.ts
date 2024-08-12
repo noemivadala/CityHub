@@ -87,24 +87,26 @@ export default class ProfileUserComponent implements OnInit {
     }
   }
 
+  //dettagli user
   fetchUserDetails(id: number) {
     this.goRest.getDetailUser(id).subscribe(response => {
       this.user = response;
     });
   }
 
+  //dettagli post
   fetchUserPosts(userId: number) {
     this.goRest.getPostsByUser(userId).subscribe(response => {
       this.posts = response;
-      console.log(this.posts);
-      console.log(userId);
     });
   }
 
+  //visualizza commenti
   viewComment(postId: number) {
     this.router.navigate(['/post', postId]);
   }
 
+  //prime due lettere nome
   getNameLetter(name: string): string {
     return name.slice(0, 2).toUpperCase();
   }

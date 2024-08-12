@@ -55,9 +55,11 @@ export default class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   login() {
+    //convalida token
     this.authService.validateToken(this.token).subscribe(
       isValid => {
         if (isValid) {
+          //salva e naviga
           this.authService.saveToken(this.token);
           this.router.navigate(['/users']);
         } else {
@@ -68,10 +70,12 @@ export default class LoginComponent {
     );
   }
 
+  // verifica se l'utente è autenticato
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
+  //logout
   removeToken(){
     this.authService.logout();
     this.router.navigate(['/login']);

@@ -73,6 +73,7 @@ export class NavbarComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  //logout
   removeToken(){
     this.authService.logout();
     this.router.navigate(['/login']);

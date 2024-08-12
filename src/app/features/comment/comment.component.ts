@@ -68,28 +68,33 @@ export default class CommentComponent implements OnInit{
   ngOnInit(): void {
     this.postId = Number(this.route.snapshot.paramMap.get('postId'));
     console.log(this.postId);
+    //se l'id è valido mostra dettagli del post e commenti
     if (this.postId) {
       this.PostDetails(this.postId);
       this.PostComments(this.postId);
     }
   }
 
+  //recupero dettagli del post
   PostDetails(postId: number) {
     this.goRest.getPostDetail(postId).subscribe(response => {
       this.post = response;
     });
   }
 
+  //recupero commenti del post
   PostComments(postId: number) {
     this.goRest.getPostComment(postId).subscribe(response => {
       this.comments = response;
     });
   }
 
+  //aggiunge un nuovo commento all'array
   CommentAdd(comment: Comment) {
     this.comments.push(comment);
   }
 
+  //prima lettera del nome
   getNameLetter(name: string): string {
     return name.charAt(0).toUpperCase();
   }

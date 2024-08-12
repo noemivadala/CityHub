@@ -40,7 +40,6 @@ export class AuthService {
     return null;
   }
 
-
   // salvo l'user_id
   saveUserId(userId: number): void {
     if (this.isLocalStorageAvailable()) {
@@ -84,6 +83,7 @@ export class AuthService {
     );
   }
 
+  //logout
   logout(): void {
     if (this.isLocalStorageAvailable()) {
       localStorage.removeItem(this.tokenKey);
@@ -92,6 +92,7 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  //se è loggato
   isLoggedIn(): boolean {
     if (this.isLocalStorageAvailable()) {
       const token = localStorage.getItem(this.tokenKey);

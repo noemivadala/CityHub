@@ -2,7 +2,6 @@ import { Component, ElementRef, Renderer2} from '@angular/core';
 import { GorestService } from '../../service/gorest.service';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
-import { DeleteUserComponent } from "./delete-user.component";
 import { FormsModule } from '@angular/forms';
 import { SearchComponent } from "../../core/components/search.component";
 import { AddUsersComponent } from "./add-users.component";
@@ -28,7 +27,6 @@ import { CardUserComponent } from "./card-user.component";
               <app-card-user
                 *ngFor="let user of filteredUsers"
                 [user]="user"
-                [editFields]="editFields"
                 [selectedUserId]="selectedUserId"
                 (userDeleted)="handleUserDeleted($event)"
               ></app-card-user>
@@ -76,19 +74,19 @@ import { CardUserComponent } from "./card-user.component";
       </div>
   `,
     styles: ``,
-    imports: [CommonModule, DeleteUserComponent, FormsModule, SearchComponent, AddUsersComponent, CardUserComponent]
+    imports: [CommonModule, FormsModule, SearchComponent, AddUsersComponent, CardUserComponent]
 })
 export default class UsersComponent {
 
   users: User [] = [];
+  // utenti filtrati da visualizzare
   filteredUsers: User[] = [];
   currentPage: number = 1;
   //numero utenti visibili
   pageSize: number = 6;
   totalPages: number = 0;
   searchTerm: string = '';
-  
-  editFields: boolean = true;
+  //id utente selezionato
   selectedUserId: any;
   newUser: User = { id: 0, name: '', email: '', gender: 'Male', status: 'active' };
 
@@ -135,11 +133,13 @@ export default class UsersComponent {
     this.updateFilteredUsers();
   }
 
+  //cerca
   onSearchChanged(searchTerm: string) {
     this.searchTerm = searchTerm;
     this.filterUsers();
   }
 
+  //filtra user per nome ed email
   filterUsers() {
     if (this.searchTerm.trim() !== '') {
       this.filteredUsers = this.users.filter(user =>
@@ -151,6 +151,7 @@ export default class UsersComponent {
     }
   }
 
+  //visualizza dettagli checkbox apri/chiudi
   openAllCollaps() {
     const checkboxes = document.querySelectorAll('.collapse-user input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
     const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
@@ -161,12 +162,16 @@ export default class UsersComponent {
   
   showAddUser = false;
 
+  //modulo create user
   addUserEvent(){
     this.showAddUser = true;
   }
 
+  //aggiunto utente
   handleUserAdded(user: User): void {
     this.users.unshift(user);
     this.filteredUsers = [...this.users];
   }
+
+
 }

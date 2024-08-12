@@ -38,15 +38,16 @@ export class AddPostComponent {
   constructor(private goRest: GorestService, private authService: AuthService) {}
 
   addPost(): void {
+    //recupero l'id dell'utente autenticato
     const userId = this.authService.getUserId();
-    
     this.newPost.user_id = userId as number;
 
+    // aggiungi il post
     this.goRest.addPost(this.newPost).subscribe(user => {
       this.postAdded.emit(user);
       this.newPost = { user_id: userId as number, title: '', body: '' };
     }, error => {
-      console.error('Error adding post:', error);
+      console.error('Errore:', error);
     });
   }
   

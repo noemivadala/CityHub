@@ -68,19 +68,19 @@ export class CardUserComponent {
 
   constructor(private router: Router, private goRest: GorestService) { }
 
+  //visualizza profilo
   viewProfile(userId: any) {
     this.router.navigate(['/profile', userId]);
   }
 
+  //elimina selezionato
   deleteClicked(userId: any) {
     this.goRest.deleteUser(userId).subscribe(
-      () => {
-        console.log(`User with ID ${userId} deleted successfully.`);
-        this.userDeleted.emit(userId);
-      }
+      () => { this.userDeleted.emit(userId); }
     );
   }
 
+  //prime due lettere
   getNameLetter(name: string): string {
     return name.slice(0, 2).toUpperCase();
   }

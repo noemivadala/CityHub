@@ -86,15 +86,18 @@ export default class ListPostComponent {
         body: post.body,
       }));
       
+      //post filtrati
       this.filteredPosts = [...this.posts];
     });
   }
 
+  //cerca
   onSearchChanged(searchTerm: string) {
     this.searchTerm = searchTerm;
     this.filterPosts();
   }
 
+  //filtra post in base al titolo e al body
   filterPosts() {
     if (this.searchTerm.trim() !== '') {
       this.filteredPosts = this.posts.filter(post =>
@@ -105,11 +108,13 @@ export default class ListPostComponent {
       this.filteredPosts = [...this.posts];
     }
   }
-
+  
+  //visualizza commenti del post
   viewComment(postId: number) {
     this.router.navigate(['/post', postId]);
   }
 
+  //aggiunta post
   onPostAdded(newPost: Post) {
     this.posts.unshift(newPost);
     this.filterPosts();
