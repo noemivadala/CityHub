@@ -34,12 +34,15 @@ describe('AddCommentComponent', () => {
     component = fixture.componentInstance;
     goRestService = TestBed.inject(GorestService) as jasmine.SpyObj<GorestService>;
 
+    //postId e i dati del commento
     component.postId = 1;
     component.comment = {
       name: 'Alice',
       email: 'alice@example.com',
       body: 'This is a comment'
     };
+    
+    fixture.detectChanges();  //dati inizializzati
   });
 
   it('should create', () => {
@@ -50,17 +53,18 @@ describe('AddCommentComponent', () => {
     spyOn(component.commentAdded, 'emit');
 
     const form = fixture.debugElement.query(By.directive(NgForm)).componentInstance as NgForm;
+
+    //form valido
+    expect(form.valid).toBeTruthy();
+
     component.onSubmit(form);
 
     const expectedComment: Comment = {
-      id: 0,
-      post_id: component.postId,
-      name: 'Alice',
-      email: 'alice@example.com',
-      body: 'This is a comment'
+      ...mockComment,
+      post_id: component.postId
     };
 
-    expect(goRestService.addComment).toHaveBeenCalledWith(component.postId, expectedComment);
+    expect(goRestService.addComment).toHaveBeenCalledWith(1, expectedComment);
     expect(component.commentAdded.emit).toHaveBeenCalledWith(mockComment);
     expect(component.comment).toEqual({ name: '', email: '', body: '' });
   });
@@ -69,6 +73,7 @@ describe('AddCommentComponent', () => {
     goRestService.addComment.calls.reset();
     spyOn(component.commentAdded, 'emit');
 
+    //form invalido
     component.comment = { name: '', email: '', body: '' };
     fixture.detectChanges();
 

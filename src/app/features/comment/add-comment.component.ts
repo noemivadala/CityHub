@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Comment } from '../../models/comment';
 import { GorestService } from '../../service/gorest.service';
@@ -24,23 +24,27 @@ import { GorestService } from '../../service/gorest.service';
       </div>
       <input class="btn btn-sm" type="submit" value="Submit" />
     </form>
-
   `,
   styles: ``
 })
-export class AddCommentComponent {
+export class AddCommentComponent implements OnChanges {
 
   @Input() postId!: number;
   @Output() commentAdded = new EventEmitter<Comment>();
 
   comment: Partial<Comment> = {
-    post_id: this.postId,
     name: '',
     email: '',
     body: '',
   };
 
   constructor(private goRest: GorestService) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['postId']) {
+      this.comment.post_id = this.postId;
+    }
+  }
 
   onSubmit(form: NgForm) {
     if (form.valid) {
@@ -54,5 +58,4 @@ export class AddCommentComponent {
       });
     }
   }
-
 }
