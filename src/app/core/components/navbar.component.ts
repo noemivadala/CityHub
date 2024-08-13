@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
           </div>
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex flex-shrink-0 items-center">
-              <img class="h-8 w-auto" src="../../../assets/images/logo-cityhub.png" alt="Your Company">
+              <a routerLink="login"><img class="h-8 w-auto" src="../../../assets/images/logo-cityhub.png" alt="CityHub"></a>
             </div>
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
