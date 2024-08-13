@@ -16,9 +16,6 @@
 - **[Express](https://expressjs.com/)** - Fast, unopinionated, minimalist web framework for Node.js.
 - **[Webpack Dev Middleware](https://webpack.js.org/)** - Middleware for webpack to serve files from webpack's output directory.
 
-## 📦 Bundler
-
-![Webpack](https://img.shields.io/badge/webpack-%238DD6F9.svg?style=for-the-badge&logo=webpack&logoColor=black)
 
 ## 💡 Test
 
