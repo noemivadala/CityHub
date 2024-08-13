@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
     selector: 'app-list-post',
     standalone: true,
     template: `
-    <div class="flex mb-3 gap-2 items-center">
+    <div class="flex mb-3 gap-4 items-center">
       <h3 class="text-3xl font-semibold mb-2">Posts</h3>
-      <app-search class="inline-block search-input" (searchChanged)="onSearchChanged($event)"></app-search>
+      <app-search class="inline-block" (searchChanged)="onSearchChanged($event)"></app-search>
     </div>
 
     <div class="drawer lg:drawer-open">

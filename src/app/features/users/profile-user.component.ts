@@ -11,7 +11,7 @@ import { Post } from '../../models/post';
     template: `
     <button class="btn btn-sm" [routerLink]="['/users']">Back to list</button>
     <div *ngIf="user">
-      <div class="grid gap-4 grid-cols-2 grid-rows-2 container-home mt-6">
+      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 grid-rows-2 container-home mt-6">
         <div class="gap-5 mb-4 ">
           <div class="avatar placeholder mb-4">
             <div class="bg-neutral text-neutral-content rounded-full w-12">

@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from "./core/components/navbar.component";
 import { HttpClientModule } from '@angular/common/http';
-import { FooterComponent } from "./core/components/footer.component";
 import { AuthService } from './service/auth.service';
 import { filter } from 'rxjs';
 
@@ -19,7 +18,7 @@ import { filter } from 'rxjs';
     </div>
   `,
     styles: [],
-    imports: [CommonModule, RouterOutlet, NavbarComponent, HttpClientModule, FooterComponent]
+    imports: [CommonModule, RouterOutlet, NavbarComponent, HttpClientModule]
 })
 export class AppComponent {
 

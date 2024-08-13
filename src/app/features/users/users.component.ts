@@ -12,7 +12,7 @@ import { CardUserComponent } from "./card-user.component";
     selector: 'app-users',
     standalone: true,
     template: `
-      <div class="flex mb-3 gap-2 items-center">
+      <div class="flex mb-3 gap-4 items-center">
         <h3 class="text-3xl font-semibold mb-2">Users</h3>
         <app-search class="inline-block" (searchChanged)="onSearchChanged($event)"></app-search>
       </div>
