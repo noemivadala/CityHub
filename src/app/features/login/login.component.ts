@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
     <div class="w-full max-w-96 block">
       <h2 class="text-xs">SIGN IN</h2>
       <h1 class="mb-2">Access Your Account.</h1>
-      <h4 class="mb-6 text-base">Don't have the token? <a class="font-semibold" href="#">Link</a></h4>
+      <h4 class="mb-6 text-base">Don't have the token? <a class="font-semibold" href="https://gorest.co.in/consumer/login" target="_blank">Link</a></h4>
       <label class="input input-bordered flex items-center gap-2 mb-6">
         <input [(ngModel)]="token" type="password" class="grow" placeholder="GoRest Token" />
         <svg
