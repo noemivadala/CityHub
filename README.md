@@ -1,4 +1,4 @@
-<h1>Welcome to City Hub 🌐</h1>
+<h1>Welcome to CityHub 🌐</h1>
 
 > City Hub is a fictitious social network created for an exam project with Start2Impact. It allows users to interact with a mock API provided by [GoRest](https://gorest.co.in/), enabling authentication and management of user data.
 
