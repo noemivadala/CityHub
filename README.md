@@ -38,7 +38,7 @@
 ## Clone repository
 
 ```sh
-git clone https://github.com/noemivadala/cities-lifestyle
+git clone https://github.com/noemivadala/CityHub
 ```
 
 ## Install all dependencies
@@ -60,7 +60,7 @@ npm run dev
 ```
 ## 🌐 Try it!
 
-<p>Link: https:</p>
+<p>Link: (https://cityhub.netlify.app/)</p>
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
