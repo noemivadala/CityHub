@@ -34,6 +34,11 @@
 - **Comment View:** By clicking the "comment" button on a post, you can view the comments associated with that post.
 - **Test Coverage:** The application has a test coverage of at least 60%.
 
+## Screenshot
+![Descrizione screenshot](./screenshots/screenshot-1.jpg)
+![Descrizione screenshot](./screenshots/screenshot-2.jpg)
+![Descrizione screenshot](./screenshots/screenshot-3.jpg)
+![Descrizione screenshot](./screenshots/screenshot-4.jpg)
 
 ## Clone repository
 
