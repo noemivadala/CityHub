@@ -7,7 +7,6 @@ import { User } from '../../models/user';
 import UsersComponent from './users.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DeleteUserComponent } from "./delete-user.component";
 import { SearchComponent } from "../../core/components/search.component";
 import { AddUsersComponent } from "./add-users.component";
 import { CardUserComponent } from "./card-user.component";
@@ -37,7 +36,6 @@ describe('UsersComponent', () => {
         UsersComponent,
         CommonModule,
         FormsModule,
-        DeleteUserComponent,
         SearchComponent,
         AddUsersComponent,
         CardUserComponent
