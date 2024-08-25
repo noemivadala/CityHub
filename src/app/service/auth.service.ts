@@ -71,7 +71,6 @@ export class AuthService {
             return true;
           }
         }
-        console.error('No valid user ID found in the response.');
         return false;
       }),
       catchError((error: HttpErrorResponse) => {
