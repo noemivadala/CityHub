@@ -3,11 +3,11 @@ import { provideRouter, withViewTransitions } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './core/auth/auth.interceptor';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes, withViewTransitions()), 
     provideClientHydration(), 
-    provideHttpClient(withFetch(), withInterceptors([ authInterceptor ]))
+    provideHttpClient(withFetch(), withInterceptors([ AuthInterceptor ]))
   ]
 };
