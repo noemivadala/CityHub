@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 describe('AuthInterceptor', () => {
   let httpMock: HttpTestingController;
@@ -12,11 +11,7 @@ describe('AuthInterceptor', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: AuthInterceptor,
-          multi: true
-        }
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
       ]
     });
 
@@ -30,7 +25,7 @@ describe('AuthInterceptor', () => {
 
   it('should add Authorization header if token is present in localStorage', () => {
     const token = 'test-token';
-    spyOn(localStorage, 'getItem').and.returnValue(token); // Simulate token in localStorage
+    spyOn(localStorage, 'getItem').and.returnValue(token); // Simula il token in localStorage
 
     httpClient.get('/test').subscribe();
 
@@ -41,7 +36,7 @@ describe('AuthInterceptor', () => {
   });
 
   it('should not add Authorization header if token is not present in localStorage', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(null); // No token in localStorage
+    spyOn(localStorage, 'getItem').and.returnValue(null); // Nessun token in localStorage
 
     httpClient.get('/test').subscribe();
 
@@ -51,7 +46,7 @@ describe('AuthInterceptor', () => {
   });
 
   it('should pass the request to the next handler unchanged if no token', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(null); // No token in localStorage
+    spyOn(localStorage, 'getItem').and.returnValue(null); // Nessun token in localStorage
 
     httpClient.get('/test').subscribe(response => {
       expect(response).toBeTruthy();
@@ -65,7 +60,7 @@ describe('AuthInterceptor', () => {
 
   it('should clone the request and add the Authorization header if token is present', () => {
     const token = 'test-token';
-    spyOn(localStorage, 'getItem').and.returnValue(token); // Simulate token in localStorage
+    spyOn(localStorage, 'getItem').and.returnValue(token); // Simula il token in localStorage
 
     httpClient.get('/test').subscribe();
 
