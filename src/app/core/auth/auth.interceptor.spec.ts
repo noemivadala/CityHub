@@ -1,21 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './auth.interceptor';
+import { AuthService } from '../../service/auth.service';
 
-describe('AuthInterceptor', () => {
+describe('AuthService', () => {
   let httpMock: HttpTestingController;
-  let httpClient: HttpClient;
+  let authService: AuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-      ]
+      providers: [AuthService]
     });
 
-    httpClient = TestBed.inject(HttpClient);
+    authService = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -23,50 +20,32 @@ describe('AuthInterceptor', () => {
     httpMock.verify();
   });
 
-  it('should add Authorization header if token is present in localStorage', () => {
-    const token = 'test-token';
-    spyOn(localStorage, 'getItem').and.returnValue(token); // Simula il token in localStorage
+  it('should call saveUserId with a valid userId if validateToken succeeds', () => {
+    const userId = 12345; // Assicurati che sia un numero
+    spyOn(authService, 'saveUserId'); // Spia il metodo saveUserId
 
-    httpClient.get('/test').subscribe();
+    const validToken = 'valid-token';
+    spyOn(localStorage, 'getItem').and.returnValue(validToken);
 
-    const httpRequest = httpMock.expectOne('/test');
+    authService.validateToken(validToken).subscribe();
 
-    expect(httpRequest.request.headers.has('Authorization')).toBeTrue();
-    expect(httpRequest.request.headers.get('Authorization')).toBe(`Bearer ${token}`);
+    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+    expect(req.request.method).toBe('GET');
+    req.flush([{ id: userId }]);
+
+    expect(authService.saveUserId).toHaveBeenCalledWith(userId);
   });
 
-  it('should not add Authorization header if token is not present in localStorage', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(null); // Nessun token in localStorage
+  it('should handle validation error correctly and return false', () => {
+    const invalidToken = 'invalid-token';
+    spyOn(localStorage, 'getItem').and.returnValue(invalidToken);
 
-    httpClient.get('/test').subscribe();
-
-    const httpRequest = httpMock.expectOne('/test');
-
-    expect(httpRequest.request.headers.has('Authorization')).toBeFalse();
-  });
-
-  it('should pass the request to the next handler unchanged if no token', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(null); // Nessun token in localStorage
-
-    httpClient.get('/test').subscribe(response => {
-      expect(response).toBeTruthy();
+    authService.validateToken(invalidToken).subscribe(response => {
+      expect(response).toBeFalse();
     });
 
-    const httpRequest = httpMock.expectOne('/test');
-    httpRequest.flush({ data: 'test' });
-
-    expect(httpRequest.request.headers.has('Authorization')).toBeFalse();
-  });
-
-  it('should clone the request and add the Authorization header if token is present', () => {
-    const token = 'test-token';
-    spyOn(localStorage, 'getItem').and.returnValue(token); // Simula il token in localStorage
-
-    httpClient.get('/test').subscribe();
-
-    const httpRequest = httpMock.expectOne('/test');
-
-    expect(httpRequest.request.headers.has('Authorization')).toBeTrue();
-    expect(httpRequest.request.headers.get('Authorization')).toBe(`Bearer ${token}`);
+    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+    expect(req.request.method).toBe('GET');
+    req.flush(null, { status: 401, statusText: 'Unauthorized' });
   });
 });

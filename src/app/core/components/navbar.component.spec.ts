@@ -1,9 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './navbar.component';
 import { AuthService } from '../../service/auth.service';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({ selector: 'mock-component', template: '' })
+class MockComponent {}
+
+// Definisci le rotte utilizzate nel test
+const routes: Routes = [
+  { path: 'login', component: MockComponent },
+  { path: 'users', component: MockComponent },
+  { path: 'post', component: MockComponent },
+];
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -12,15 +24,21 @@ describe('NavbarComponent', () => {
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    // Creiamo delle mock per AuthService e Router
     const authServiceMock = jasmine.createSpyObj('AuthService', ['logout']);
     const routerMock = jasmine.createSpyObj('Router', ['navigate']);
+    const activatedRouteMock = jasmine.createSpyObj('ActivatedRoute', [], {
+      snapshot: { params: {} }
+    });
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NavbarComponent], // Importa il componente standalone
+      imports: [
+        RouterModule.forRoot(routes), // routerModule con le rotte
+        NavbarComponent,
+      ],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: Router, useValue: routerMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
       ]
     }).compileComponents();
 
