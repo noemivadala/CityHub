@@ -67,7 +67,7 @@ export class AuthService {
         if (response.length > 0) {
           const userId = response[0]?.id;
           if (userId) {
-            this.saveUserId(userId); // salvataggio user_id
+            this.saveUserId(userId);
             return true;
           }
         }
@@ -80,7 +80,7 @@ export class AuthService {
         throw error;
       })
     );
-  }
+  }  
 
   //logout
   logout(): void {

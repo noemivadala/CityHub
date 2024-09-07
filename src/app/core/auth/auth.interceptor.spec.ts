@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor'; // Assicurati che il percorso sia corretto
 import { AuthService } from '../../service/auth.service';
 
 describe('AuthService', () => {
@@ -9,7 +11,10 @@ describe('AuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AuthService]
+      providers: [
+        AuthService,
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+      ]
     });
 
     authService = TestBed.inject(AuthService);
@@ -21,13 +26,15 @@ describe('AuthService', () => {
   });
 
   it('should call saveUserId with a valid userId if validateToken succeeds', () => {
-    const userId = 12345; // Assicurati che sia un numero
-    spyOn(authService, 'saveUserId'); // Spia il metodo saveUserId
+    const userId = 12345;
+    spyOn(authService, 'saveUserId');
 
     const validToken = 'valid-token';
     spyOn(localStorage, 'getItem').and.returnValue(validToken);
 
-    authService.validateToken(validToken).subscribe();
+    authService.validateToken(validToken).subscribe(response => {
+      expect(response).toBeTrue();
+    });
 
     const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
     expect(req.request.method).toBe('GET');
