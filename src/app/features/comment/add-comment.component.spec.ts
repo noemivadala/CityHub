@@ -25,7 +25,6 @@ describe('AddCommentComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, AddCommentComponent],
-      declarations: [],
       providers: [
         { provide: GorestService, useValue: goRestServiceSpy }
       ]
@@ -52,10 +51,11 @@ describe('AddCommentComponent', () => {
   it('should emit commentAdded event and reset form on successful submit', async () => {
     spyOn(component.commentAdded, 'emit');
 
-    const form = fixture.debugElement.query(By.css('form')).nativeElement as HTMLFormElement;
+    const formElement = fixture.debugElement.query(By.css('form')).nativeElement as HTMLFormElement;
+    const form = fixture.debugElement.query(By.directive(NgForm)).componentInstance as NgForm;
 
     // Simula l'invio del form
-    form.dispatchEvent(new Event('submit'));
+    formElement.dispatchEvent(new Event('submit', { bubbles: true }));
 
     // Aspetta la stabilizzazione dell'asincrono
     await fixture.whenStable();
@@ -77,10 +77,12 @@ describe('AddCommentComponent', () => {
     }));
 
     // Verifica che il form sia stato resettato
-    expect(component.comment).toEqual({ name: '', email: '', body: '' });
-    fixture.detectChanges();
+    fixture.detectChanges(); // Rende visibili le modifiche del DOM
     const updatedForm = fixture.debugElement.query(By.directive(NgForm)).componentInstance as NgForm;
-    expect(updatedForm.valid).toBeFalse(); // il form dovrebbe essere invalido dopo il reset
+
+    // Verifica lo stato del form e del commento
+    expect(component.comment).toEqual({ name: '', email: '', body: '' });
+    expect(updatedForm.value).toEqual({ name: '', email: '', body: '' });
   });
 
   it('should not submit form if invalid', () => {
