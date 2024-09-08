@@ -70,7 +70,9 @@ export class NavbarComponent {
   menuOpen = false;
 
   toggleMenu() {
+    console.log('Toggling menu. Current state:', this.menuOpen);
     this.menuOpen = !this.menuOpen;
+    console.log('New state:', this.menuOpen);
   }
 
   //logout

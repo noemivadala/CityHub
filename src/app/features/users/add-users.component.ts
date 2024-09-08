@@ -39,7 +39,7 @@ export class AddUsersComponent {
       this.userAdded.emit(user);
       this.newUser = { id: 0, name: '', email: '', gender: 'Male', status: 'Active' };
     }, error => {
-      console.error('Errore:', error);
+      console.error('Error adding user:', error);
     });
   }
 }
