@@ -25,6 +25,7 @@ describe('AddCommentComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, AddCommentComponent],
+      declarations: [],
       providers: [
         { provide: GorestService, useValue: goRestServiceSpy }
       ]
@@ -34,14 +35,13 @@ describe('AddCommentComponent', () => {
     component = fixture.componentInstance;
     goRestService = TestBed.inject(GorestService) as jasmine.SpyObj<GorestService>;
 
-    // imposta i dati del commento iniziale
     component.postId = 1;
     component.comment = {
       name: 'Alice',
       email: 'alice@example.com',
       body: 'This is a comment'
     };
-    
+
     fixture.detectChanges();
   });
 
@@ -51,26 +51,23 @@ describe('AddCommentComponent', () => {
 
   it('should emit commentAdded event and reset form on successful submit', async () => {
     spyOn(component.commentAdded, 'emit');
-    
-    const form = fixture.debugElement.query(By.directive(NgForm)).componentInstance as NgForm;
-    
-    // verifica che il form sia valido
-    expect(form.valid).toBeTruthy();
 
-    // simula l'invio del form
-    component.onSubmit(form);
+    const form = fixture.debugElement.query(By.css('form')).nativeElement as HTMLFormElement;
 
-    // aspetta la stabilizzazione dell'asincrono
-    await fixture.whenStable();  
-    
-    // verifica che il servizio sia stato chiamato con i parametri corretti
+    // Simula l'invio del form
+    form.dispatchEvent(new Event('submit'));
+
+    // Aspetta la stabilizzazione dell'asincrono
+    await fixture.whenStable();
+
+    // Verifica che il servizio sia stato chiamato con i parametri corretti
     expect(goRestService.addComment).toHaveBeenCalledWith(1, jasmine.objectContaining({
       name: 'Alice',
       email: 'alice@example.com',
       body: 'This is a comment'
     }));
 
-    // verifica che l'evento commentAdded sia stato emesso con il commento corretto
+    // Verifica che l'evento commentAdded sia stato emesso con il commento corretto
     expect(component.commentAdded.emit).toHaveBeenCalledWith(jasmine.objectContaining({
       id: 1,
       post_id: 1,
@@ -79,29 +76,28 @@ describe('AddCommentComponent', () => {
       body: 'This is a comment'
     }));
 
-    // verifica che il form sia stato resettato
+    // Verifica che il form sia stato resettato
     expect(component.comment).toEqual({ name: '', email: '', body: '' });
-    fixture.detectChanges();  
-    expect(form.valid).toBeFalsy();  // il form dovrebbe essere invalido dopo il reset
+    fixture.detectChanges();
+    const updatedForm = fixture.debugElement.query(By.directive(NgForm)).componentInstance as NgForm;
+    expect(updatedForm.valid).toBeFalse(); // il form dovrebbe essere invalido dopo il reset
   });
 
   it('should not submit form if invalid', () => {
-    // reset delle chiamate
     goRestService.addComment.calls.reset();
     spyOn(component.commentAdded, 'emit');
 
-    // rendi il form invalido
     component.comment = { name: '', email: '', body: '' };
     fixture.detectChanges();
 
     const form = fixture.debugElement.query(By.directive(NgForm)).componentInstance as NgForm;
 
-    // simula l'invio del form invalido
+    // Simula l'invio del form invalido
     component.onSubmit(form);
 
-    // verifica che il servizio non sia stato chiamato
+    // Verifica che il servizio non sia stato chiamato
     expect(goRestService.addComment).not.toHaveBeenCalled();
-    // verifica che l'evento non sia stato emesso
+    // Verifica che l'evento non sia stato emesso
     expect(component.commentAdded.emit).not.toHaveBeenCalled();
   });
 });
