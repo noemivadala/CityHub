@@ -40,7 +40,6 @@ export class AddCommentComponent implements OnChanges {
 
   constructor(private goRest: GorestService) {}
 
-
   //metodo chiamato ogni volta che gli input del componente cambiano
   ngOnChanges(changes: SimpleChanges) {
     if (changes['postId']) {
@@ -48,19 +47,17 @@ export class AddCommentComponent implements OnChanges {
     }
   }
 
-  //invio
+  //metodo per inviare il form
   onSubmit(form: NgForm) {
     if (form.valid) {
-      //nuovo commento con il post_id aggiornato
       const newComment: Comment = {
         ...this.comment as Comment,
         post_id: this.postId
       };
-      //aggiunto post
+
       this.goRest.addComment(this.postId, newComment).subscribe(response => {
         this.commentAdded.emit(response);
-        //reset
-        form.resetForm();
+        form.resetForm(); // reset del form dopo la risposta
       });
     }
   }

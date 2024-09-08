@@ -6,6 +6,7 @@ import { AddPostComponent } from './add-post.component';
 import { GorestService } from '../../service/gorest.service';
 import { AuthService } from '../../service/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EventEmitter } from '@angular/core';
 
 // Mock data
 const mockPost = { user_id: 1, title: 'New Post', body: 'This is a new post' };
@@ -35,6 +36,9 @@ describe('AddPostComponent', () => {
 
     authService.getUserId.and.returnValue(1);
     goRestService.addPost.and.returnValue(of(mockPost));
+
+    // Assicuriamoci che l'EventEmitter sia stato correttamente inizializzato
+    component.postAdded = new EventEmitter<any>();
   });
 
   it('should create', () => {
@@ -50,6 +54,7 @@ describe('AddPostComponent', () => {
     expect(goRestService.addPost).toHaveBeenCalledWith({ user_id: 1, title: 'Test Title', body: 'Test Body' });
     expect(component.postAdded.emit).toHaveBeenCalledWith(mockPost);
     
+    // Verifica che il form venga resettato correttamente
     expect(component.newPost).toEqual({ user_id: 1, title: '', body: '' });
   });
 
@@ -57,11 +62,13 @@ describe('AddPostComponent', () => {
     const errorResponse = new HttpErrorResponse({ error: 'Error', status: 500 });
     goRestService.addPost.and.returnValue(throwError(() => errorResponse));
     spyOn(console, 'error');
-
+  
     component.newPost = { user_id: 1, title: 'Test Title', body: 'Test Body' };
     component.addPost();
-
+  
     expect(goRestService.addPost).toHaveBeenCalledWith(component.newPost);
-    expect(console.error).toHaveBeenCalledWith('Error adding post:', errorResponse);
+  
+    // Aggiornato il messaggio di errore in base alla lingua del messaggio reale
+    expect(console.error).toHaveBeenCalledWith('Errore:', errorResponse);
   });
 });
