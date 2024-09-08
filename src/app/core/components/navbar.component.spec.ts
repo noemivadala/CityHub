@@ -5,12 +5,12 @@ import { NavbarComponent } from './navbar.component';
 import { AuthService } from '../../service/auth.service';
 import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 @Component({ selector: 'mock-component', template: '' })
 class MockComponent {}
 
-// Definisci le rotte utilizzate nel test
+// Configura le rotte per il test
 const routes: Routes = [
   { path: 'login', component: MockComponent },
   { path: 'users', component: MockComponent },
@@ -26,19 +26,14 @@ describe('NavbarComponent', () => {
   beforeEach(async () => {
     const authServiceMock = jasmine.createSpyObj('AuthService', ['logout']);
     const routerMock = jasmine.createSpyObj('Router', ['navigate']);
-    const activatedRouteMock = jasmine.createSpyObj('ActivatedRoute', [], {
-      snapshot: { params: {} }
-    });
 
     await TestBed.configureTestingModule({
       imports: [
-        RouterModule.forRoot(routes), // routerModule con le rotte
-        NavbarComponent,
+        RouterModule.forRoot(routes), // Configura le rotte per il test
+        NavbarComponent
       ],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
-        { provide: Router, useValue: routerMock },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
       ]
     }).compileComponents();
 
