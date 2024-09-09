@@ -63,8 +63,24 @@ describe('AuthService', () => {
       expect(response).toBeFalse();
     });
 
-    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+    const req = httpMock.expectOne((request) => 
+      request.url === 'https://gorest.co.in/public/v2/users' &&
+      request.params.get('access-token') === invalidToken
+    );
+    
     expect(req.request.method).toBe('GET');
+    
     req.flush(null, { status: 401, statusText: 'Unauthorized' });
   });
+
+  it('should generate a random userId if not in local storage', () => {
+    // Simula che l'utenteId non sia presente in localStorage
+    spyOn(localStorage, 'getItem').and.returnValue(null);
+
+    // Attendi un valore che possa essere qualsiasi valore generato casualmente
+    const generatedUserId = authService.getUserId();
+    expect(generatedUserId).toBeGreaterThanOrEqual(1);
+    expect(generatedUserId).toBeLessThanOrEqual(10000);
+  });
+
 });
