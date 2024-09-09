@@ -1,24 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { AuthService } from './auth.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from '../core/auth/auth.interceptor';
+import { AuthService } from './auth.service'; // Assicurati che il percorso sia corretto
+import { Router } from '@angular/router';
 
 describe('AuthService', () => {
+  let service: AuthService;
   let httpMock: HttpTestingController;
-  let authService: AuthService;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        AuthService,
-        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } // Usa `useClass` qui
-      ]
+      providers: [AuthService, { provide: Router, useValue: {} }] // Mock Router
     });
-
-    authService = TestBed.inject(AuthService);
+    service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
+    router = TestBed.inject(Router);
   });
 
   afterEach(() => {
@@ -26,41 +23,38 @@ describe('AuthService', () => {
   });
 
   it('should call saveUserId with a valid userId if validateToken succeeds', () => {
-    const userId = 12345;
-    spyOn(authService, 'saveUserId');
+    const token = 'validToken';
+    const mockResponse = [{ id: 123 }];
 
-    const validToken = 'valid-token';
+    spyOn(service, 'saveUserId'); // Spy sulla funzione saveUserId
 
-    authService.validateToken(validToken).subscribe(response => {
-      expect(response).toBeTrue();
+    service.validateToken(token).subscribe(isValid => {
+      expect(isValid).toBeTrue(); // Verifica che la risposta sia true
+      expect(service.saveUserId).toHaveBeenCalledWith(123); // Verifica che saveUserId sia stato chiamato con l'id corretto
     });
 
-    const req = httpMock.expectOne(request =>
-      request.method === 'GET' &&
-      request.url === 'https://gorest.co.in/public/v2/users' &&
-      request.params.get('access-token') === validToken
+    const req = httpMock.expectOne((req) => 
+      req.url === 'https://gorest.co.in/public/v2/users' &&
+      req.params.get('access-token') === token
     );
-
     expect(req.request.method).toBe('GET');
-    req.flush([{ id: userId }]);
-
-    expect(authService.saveUserId).toHaveBeenCalledWith(userId);
+    req.flush(mockResponse); // Rispondi alla richiesta HTTP con il mockResponse
   });
 
-  it('should handle validation error correctly and return false', () => {
-    const invalidToken = 'invalid-token';
+  it('should not call saveUserId if validateToken fails', () => {
+    const token = 'invalidToken';
+    spyOn(service, 'saveUserId');
 
-    authService.validateToken(invalidToken).subscribe(response => {
-      expect(response).toBeFalse();
+    service.validateToken(token).subscribe(isValid => {
+      expect(isValid).toBeFalse(); // Verifica che la risposta sia false
+      expect(service.saveUserId).not.toHaveBeenCalled(); // Verifica che saveUserId non sia stato chiamato
     });
 
-    const req = httpMock.expectOne(request =>
-      request.method === 'GET' &&
-      request.url === 'https://gorest.co.in/public/v2/users' &&
-      request.params.get('access-token') === invalidToken
+    const req = httpMock.expectOne((req) => 
+      req.url === 'https://gorest.co.in/public/v2/users' &&
+      req.params.get('access-token') === token
     );
-
     expect(req.request.method).toBe('GET');
-    req.flush(null, { status: 401, statusText: 'Unauthorized' });
+    req.flush([], { status: 401, statusText: 'Unauthorized' }); // Rispondi con un errore 401
   });
 });
