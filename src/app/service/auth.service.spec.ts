@@ -1,60 +1,70 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { AuthService } from './auth.service'; // Assicurati che il percorso sia corretto
-import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
-  let service: AuthService;
   let httpMock: HttpTestingController;
-  let router: Router;
+  let authService: AuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AuthService, { provide: Router, useValue: {} }] // Mock Router
+      providers: [AuthService]
     });
-    service = TestBed.inject(AuthService);
+
+    authService = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
-    router = TestBed.inject(Router);
   });
 
   afterEach(() => {
     httpMock.verify();
   });
 
-  it('should call saveUserId with a valid userId if validateToken succeeds', () => {
-    const token = 'validToken';
-    const mockResponse = [{ id: 123 }];
-
-    spyOn(service, 'saveUserId'); // Spy sulla funzione saveUserId
-
-    service.validateToken(token).subscribe(isValid => {
-      expect(isValid).toBeTrue(); // Verifica che la risposta sia true
-      expect(service.saveUserId).toHaveBeenCalledWith(123); // Verifica che saveUserId sia stato chiamato con l'id corretto
-    });
-
-    const req = httpMock.expectOne((req) => 
-      req.url === 'https://gorest.co.in/public/v2/users' &&
-      req.params.get('access-token') === token
-    );
-    expect(req.request.method).toBe('GET');
-    req.flush(mockResponse); // Rispondi alla richiesta HTTP con il mockResponse
+  it('should save and retrieve token correctly', () => {
+    const token = 'test-token';
+    authService.saveToken(token);
+    expect(authService.getToken()).toBe(token);
   });
 
-  it('should not call saveUserId if validateToken fails', () => {
-    const token = 'invalidToken';
-    spyOn(service, 'saveUserId');
+  it('should save and retrieve userId correctly', () => {
+    const userId = 12345;
+    authService.saveUserId(userId);
+    expect(authService.getUserId()).toBe(userId);
+  });
 
-    service.validateToken(token).subscribe(isValid => {
-      expect(isValid).toBeFalse(); // Verifica che la risposta sia false
-      expect(service.saveUserId).not.toHaveBeenCalled(); // Verifica che saveUserId non sia stato chiamato
+  it('should generate a random userId if not in local storage', () => {
+    spyOn(Math, 'random').and.returnValue(0.5); // mock the random value
+    expect(authService.getUserId()).toBe(5001);
+  });
+
+  it('should call saveUserId with a valid userId if validateToken succeeds', () => {
+    const userId = 12345;
+    spyOn(authService, 'saveUserId');
+
+    const validToken = 'valid-token';
+    spyOn(localStorage, 'getItem').and.returnValue(validToken);
+
+    authService.validateToken(validToken).subscribe(response => {
+      expect(response).toBeTrue();
     });
 
-    const req = httpMock.expectOne((req) => 
-      req.url === 'https://gorest.co.in/public/v2/users' &&
-      req.params.get('access-token') === token
-    );
+    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
     expect(req.request.method).toBe('GET');
-    req.flush([], { status: 401, statusText: 'Unauthorized' }); // Rispondi con un errore 401
+    req.flush([{ id: userId }]);
+
+    expect(authService.saveUserId).toHaveBeenCalledWith(userId);
+  });
+
+  it('should handle validation error correctly and return false', () => {
+    const invalidToken = 'invalid-token';
+    spyOn(localStorage, 'getItem').and.returnValue(invalidToken);
+
+    authService.validateToken(invalidToken).subscribe(response => {
+      expect(response).toBeFalse();
+    });
+
+    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+    expect(req.request.method).toBe('GET');
+    req.flush(null, { status: 401, statusText: 'Unauthorized' });
   });
 });
