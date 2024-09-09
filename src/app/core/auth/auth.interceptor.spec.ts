@@ -1,38 +1,57 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AuthService } from '../../service/auth.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor'; // Assicurati che il percorso sia corretto
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('AuthInterceptor', () => {
+  let httpMock: HttpTestingController;
+  let httpClient: HttpClient;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AuthService]
+      providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useValue: AuthInterceptor,
+          multi: true
+        }
+      ]
     });
 
-    service = TestBed.inject(AuthService);
+    httpClient = TestBed.inject(HttpClient);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('should generate a random userId if not in local storage', () => {
-    const mockGeneratedId = 5001;
-    spyOn(service, 'generateRandomUserId').and.returnValue(mockGeneratedId);
-
-    // Clear localStorage
-    localStorage.removeItem('gorest-user-id');
-
-    const userId = service.getUserId();
-
-    expect(userId).toBe(mockGeneratedId);
-    expect(service.generateRandomUserId).toHaveBeenCalled();
+  afterEach(() => {
+    httpMock.verify();
   });
 
-  it('should return userId from localStorage if present', () => {
-    const userId = 12345;
-    spyOn(localStorage, 'getItem').and.returnValue(userId.toString());
+  it('should add Authorization header with token if available', () => {
+    const token = 'test-token';
+    spyOn(localStorage, 'getItem').and.returnValue(token);
 
-    const result = service.getUserId();
+    httpClient.get('https://gorest.co.in/public/v2/users').subscribe(response => {
+      expect(response).toBeTruthy();
+    });
 
-    expect(result).toBe(userId);
+    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+    expect(req.request.method).toBe('GET');
+    expect(req.request.headers.has('Authorization')).toBeTrue();
+    expect(req.request.headers.get('Authorization')).toBe(`Bearer ${token}`);
+    req.flush({});
+  });
+
+  it('should not add Authorization header if token is not available', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(null);
+
+    httpClient.get('https://gorest.co.in/public/v2/users').subscribe(response => {
+      expect(response).toBeTruthy();
+    });
+
+    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+    expect(req.request.method).toBe('GET');
+    expect(req.request.headers.has('Authorization')).toBeFalse();
+    req.flush({});
   });
 });
