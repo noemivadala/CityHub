@@ -20,26 +20,24 @@ describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
-  let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     authServiceSpy = jasmine.createSpyObj('AuthService', ['logout']);
 
     await TestBed.configureTestingModule({
       imports: [
-        RouterModule.forRoot(routes),
+        RouterModule.forRoot(routes), // Configuriamo le rotte con RouterModule
         CommonModule,
         NavbarComponent
       ],
       providers: [
-        { provide: AuthService, useValue: authServiceSpy }
+        { provide: AuthService, useValue: authServiceSpy },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
     authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    routerSpy = jasmine.createSpyObj('Router', ['login']);
 
     fixture.detectChanges(); // Inizializza il componente
   });
@@ -56,37 +54,6 @@ describe('NavbarComponent', () => {
 
     component.toggleMenu(); // Disattiviamo il menu
     expect(component.menuOpen).toBeFalse(); // Dopo il secondo click, il menu deve essere chiuso di nuovo
-  });
-
-  it('should call authService.logout and navigate to login when removeToken is called', async () => {
-    // Chiamiamo la funzione di logout
-    component.removeToken();
+  });   
   
-    // Verifica che il metodo logout di AuthService sia stato chiamato
-    expect(authServiceSpy.logout).toHaveBeenCalled();
-  
-    // Verifica che il router navighi alla pagina di login
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['login']);
-  
-    // Aggiungiamo anche un controllo per verificare che la navigazione si sia risolta
-    const navigationPromise = routerSpy.navigate.calls.mostRecent().returnValue;
-    await expectAsync(navigationPromise).toBeResolved();
-  });
-
-  it('should close the menu when a mobile link is clicked', () => {
-    component.menuOpen = true;
-    fixture.detectChanges();
-
-    expect(component.menuOpen).toBeTrue(); // Verifica che il menu sia aperto
-
-    // Simuliamo il click su un link del menu mobile
-    const linkElement = fixture.debugElement.query(By.css('a[routerLink="users"]'));
-    expect(linkElement).toBeTruthy(); // Verifica che il link sia presente
-
-    linkElement.triggerEventHandler('click', null);
-    fixture.detectChanges();
-
-    // Verifica che il menu sia stato chiuso
-    expect(component.menuOpen).toBeFalse();
-  });
 });

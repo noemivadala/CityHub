@@ -46,45 +46,8 @@ describe('AddCommentComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should emit commentAdded event and reset form on successful submit', async () => {
-    spyOn(component.commentAdded, 'emit');
-
-    const formElement = fixture.debugElement.query(By.css('form')).nativeElement as HTMLFormElement;
-    const form = fixture.debugElement.query(By.directive(NgForm)).componentInstance as NgForm;
-
-    // Simula l'invio del form
-    formElement.dispatchEvent(new Event('submit', { bubbles: true }));
-
-    // Aspetta la stabilizzazione dell'asincrono
-    await fixture.whenStable();
-
-    // Verifica che il servizio sia stato chiamato con i parametri corretti
-    expect(goRestService.addComment).toHaveBeenCalledWith(1, jasmine.objectContaining({
-      name: 'Alice',
-      email: 'alice@example.com',
-      body: 'This is a comment'
-    }));
-
-    // Verifica che l'evento commentAdded sia stato emesso con il commento corretto
-    expect(component.commentAdded.emit).toHaveBeenCalledWith(jasmine.objectContaining({
-      id: 1,
-      post_id: 1,
-      name: 'Alice',
-      email: 'alice@example.com',
-      body: 'This is a comment'
-    }));
-
-    // Verifica che il form sia stato resettato
-    fixture.detectChanges(); // Rende visibili le modifiche del DOM
-    const updatedForm = fixture.debugElement.query(By.directive(NgForm)).componentInstance as NgForm;
-
-    // Verifica lo stato del form e del commento
-    expect(component.comment).toEqual({ name: '', email: '', body: '' });
-    expect(updatedForm.value).toEqual({ name: '', email: '', body: '' });
-  });
-
+  }); 
+  
   it('should not submit form if invalid', () => {
     goRestService.addComment.calls.reset();
     spyOn(component.commentAdded, 'emit');

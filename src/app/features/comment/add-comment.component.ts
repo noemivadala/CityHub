@@ -52,7 +52,7 @@ export class AddCommentComponent implements OnChanges {
         ...this.comment as Comment,
         post_id: this.postId
       };
-
+  
       this.goRest.addComment(this.postId, newComment).subscribe(response => {
         this.commentAdded.emit(response);
         this.comment = { name: '', email: '', body: '' };
@@ -60,4 +60,5 @@ export class AddCommentComponent implements OnChanges {
       });
     }
   }
+  
 }
