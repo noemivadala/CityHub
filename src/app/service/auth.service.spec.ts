@@ -42,20 +42,23 @@ describe('AuthService', () => {
   it('should call saveUserId with a valid userId if validateToken succeeds', () => {
     const userId = 5001;
     spyOn(authService, 'saveUserId');
-
+  
     const validToken = 'valid-token';
     spyOn(localStorage, 'getItem').and.returnValue(validToken);
-
+  
     authService.validateToken(validToken).subscribe(response => {
       expect(response).toBeTrue();
     });
-
-    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+  
+    const req = httpMock.expectOne(request =>
+      request.url === 'https://gorest.co.in/public/v2/users' &&
+      request.params.get('access-token') === validToken
+    );
     expect(req.request.method).toBe('GET');
     req.flush([{ id: userId }]);
-
+  
     expect(authService.saveUserId).toHaveBeenCalledWith(userId);
-  });
+  });  
 
   it('should handle validation error correctly and return false', () => {
     const invalidToken = 'invalid-token';

@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -60,27 +60,28 @@ export class AuthService {
   }
 
   validateToken(token: string): Observable<boolean> {
-    return this.http.get<any[]>('https://gorest.co.in/public/v2/users', {
-      params: { 'access-token': token }
-    }).pipe(
-      map((response: any[]) => {
-        if (response.length > 0) {
-          const userId = response[0]?.id;
-          if (userId) {
-            this.saveUserId(userId);
-            return true;
+    const params = new HttpParams().set('access-token', token);
+  
+    return this.http.get<any[]>('https://gorest.co.in/public/v2/users', { params })
+      .pipe(
+        map((response: any[]) => {
+          if (response.length > 0) {
+            const userId = response[0]?.id;
+            if (userId) {
+              this.saveUserId(userId);
+              return true;
+            }
           }
-        }
-        return false;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          return of(false);
-        }
-        throw error;
-      })
-    );
-  }  
+          return false;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401) {
+            return of(false);
+          }
+          throw error;
+        })
+      );
+  }
 
   //logout
   logout(): void {
