@@ -1,30 +1,27 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { AuthInterceptor } from './auth.interceptor'; // Assicurati che il percorso sia corretto
+import { HttpClientTestingModule, HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
 
 describe('AuthInterceptor', () => {
-  let httpMock: HttpTestingController;
+  let httpTestingController: HttpTestingController;
   let httpClient: HttpClient;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useValue: AuthInterceptor,
-          multi: true
-        }
-      ]
+        provideHttpClient(withInterceptors([AuthInterceptor])),
+        provideHttpClientTesting(),
+      ],
     });
 
     httpClient = TestBed.inject(HttpClient);
-    httpMock = TestBed.inject(HttpTestingController);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify();
+    httpTestingController .verify();
   });
 
   it('should add Authorization header with token if available', () => {
@@ -35,7 +32,7 @@ describe('AuthInterceptor', () => {
       expect(response).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+    const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/users');
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.has('Authorization')).toBeTrue();
     expect(req.request.headers.get('Authorization')).toBe(`Bearer ${token}`);
@@ -49,7 +46,7 @@ describe('AuthInterceptor', () => {
       expect(response).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+    const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/users');
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.has('Authorization')).toBeFalse();
     req.flush({});
