@@ -8,7 +8,7 @@ import { Comment } from '../models/comment';
 
 describe('GorestService', () => {
   let service: GorestService;
-  let httpMock: HttpTestingController;
+  let httpTestingController: HttpTestingController;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
 
   beforeEach(() => {
@@ -24,14 +24,14 @@ describe('GorestService', () => {
     });
 
     service = TestBed.inject(GorestService);
-    httpMock = TestBed.inject(HttpTestingController);
+    httpTestingController = TestBed.inject(HttpTestingController);
     authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
 
     authServiceSpy.getToken.and.returnValue('test-token');
   });
 
   afterEach(() => {
-    httpMock.verify();
+    httpTestingController.verify();
   });
 
   describe('User API calls', () => {
@@ -43,7 +43,7 @@ describe('GorestService', () => {
         expect(users).toEqual(mockUsers);
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/users');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/users');
       expect(req.request.method).toBe('GET');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockUsers);
@@ -56,7 +56,7 @@ describe('GorestService', () => {
         expect(user).toEqual(mockUser);
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/users/1');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/users/1');
       expect(req.request.method).toBe('GET');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockUser);
@@ -70,7 +70,7 @@ describe('GorestService', () => {
         expect(user).toEqual(mockUser);
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/users/');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/users/');
       expect(req.request.method).toBe('POST');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockUser);
@@ -81,7 +81,7 @@ describe('GorestService', () => {
         expect(response).toBeNull();
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/users/1');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/users/1');
       expect(req.request.method).toBe('DELETE');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(null);
@@ -97,7 +97,7 @@ describe('GorestService', () => {
         expect(posts).toEqual(mockPosts);
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/posts');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/posts');
       expect(req.request.method).toBe('GET');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockPosts);
@@ -111,7 +111,7 @@ describe('GorestService', () => {
         expect(posts).toEqual(mockPosts);
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/users/1/posts/');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/users/1/posts/');
       expect(req.request.method).toBe('GET');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockPosts);
@@ -125,7 +125,7 @@ describe('GorestService', () => {
         expect(post).toEqual(mockPost);
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/users/1/posts');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/users/1/posts');
       expect(req.request.method).toBe('POST');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockPost);
@@ -138,7 +138,7 @@ describe('GorestService', () => {
         expect(post).toEqual(mockPost);
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/posts/1');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/posts/1');
       expect(req.request.method).toBe('GET');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockPost);
@@ -154,7 +154,7 @@ describe('GorestService', () => {
         expect(comments).toEqual(mockComments);
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/posts/1/comments');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/posts/1/comments');
       expect(req.request.method).toBe('GET');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockComments);
@@ -168,7 +168,7 @@ describe('GorestService', () => {
         expect(comment).toEqual(mockComment);
       });
 
-      const req = httpMock.expectOne('https://gorest.co.in/public/v2/posts/1/comments');
+      const req = httpTestingController.expectOne('https://gorest.co.in/public/v2/posts/1/comments');
       expect(req.request.method).toBe('POST');
       expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
       req.flush(mockComment);

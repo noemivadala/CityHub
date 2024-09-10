@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { ActivatedRoute, provideRoutes } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import ProfileUserComponent from './profile-user.component';
 import { GorestService } from '../../service/gorest.service';
-import { RouterTestingModule } from '@angular/router/testing';
 
 // Mock data
 const mockUser = { id: 1, name: 'John Doe', gender: 'male', email: 'john.doe@example.com', status: 'active' };
@@ -26,7 +25,6 @@ describe('ProfileUserComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
         ProfileUserComponent
       ],
       providers: [

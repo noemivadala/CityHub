@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router, Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { NavbarComponent } from './navbar.component';
 import { AuthService } from '../../service/auth.service';
-import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -26,7 +25,7 @@ describe('NavbarComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        RouterModule.forRoot(routes), // Configuriamo le rotte con RouterModule
+        RouterModule.forRoot(routes),
         CommonModule,
         NavbarComponent
       ],
@@ -39,7 +38,7 @@ describe('NavbarComponent', () => {
     component = fixture.componentInstance;
     authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
 
-    fixture.detectChanges(); // Inizializza il componente
+    fixture.detectChanges();
   });
 
   it('should create', () => {

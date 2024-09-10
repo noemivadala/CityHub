@@ -3,7 +3,6 @@ import { CardUserComponent } from './card-user.component';
 import { GorestService } from '../../service/gorest.service';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 
 describe('CardUserComponent', () => {
@@ -26,7 +25,7 @@ describe('CardUserComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, CardUserComponent],
+      imports: [CardUserComponent],
       providers: [
         { provide: GorestService, useValue: goRestServiceMock }
       ]

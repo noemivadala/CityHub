@@ -4,7 +4,6 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from "./core/components/navbar.component";
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './service/auth.service';
-import { filter } from 'rxjs';
 
 @Component({
     selector: 'app-root',

@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { convertToParamMap } from '@angular/router';
 import CommentComponent from './comment.component';
 
-// Mock data
+// data
 const mockPost: Post = { id: 1, user_id: 1, title: 'Post Title', body: 'Post Body' };
 const mockComments: Comment[] = [
   { id: 1, post_id: 1, name: 'Alice', email: 'alice@example.com', body: 'Comment by Alice' },

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
 import { GorestService } from '../../service/gorest.service';
 import { Post } from '../../models/post';
 import { SearchComponent } from "../../core/components/search.component";
@@ -9,7 +8,7 @@ import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import ListPostComponent from './list-post.component';
 
-// Mock data
+// data
 const mockPosts: Post[] = [
   { id: 1, user_id: 1, title: 'Post 1', body: 'Body of Post 1' },
   { id: 2, user_id: 1, title: 'Post 2', body: 'Body of Post 2' }
@@ -27,9 +26,8 @@ describe('ListPostComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule, // Importa HttpClientTestingModule
+        HttpClientTestingModule,
         ListPostComponent,
-        RouterTestingModule,
         SearchComponent,
         AddPostComponent
       ],
@@ -52,7 +50,7 @@ describe('ListPostComponent', () => {
   });
 
   it('should fetch posts on init', () => {
-    fixture.detectChanges(); // Triggers ngOnInit
+    fixture.detectChanges();
 
     expect(goRestService.getPost).toHaveBeenCalled();
     expect(component.posts).toEqual(mockPosts);
@@ -60,10 +58,10 @@ describe('ListPostComponent', () => {
   });
 
   it('should filter posts based on search term', () => {
-    fixture.detectChanges(); // Ensure posts are fetched
+    fixture.detectChanges();
 
     component.onSearchChanged('Post 1');
-    fixture.detectChanges(); // Update the view
+    fixture.detectChanges();
 
     expect(component.filteredPosts.length).toBe(1);
     expect(component.filteredPosts[0].title).toBe('Post 1');
@@ -79,9 +77,9 @@ describe('ListPostComponent', () => {
   it('should add a new post and filter posts', () => {
     const newPost: Post = { id: 3, user_id: 1, title: 'Post 3', body: 'Body of Post 3' };
 
-    fixture.detectChanges(); // Ensure posts are fetched
+    fixture.detectChanges();
     component.onPostAdded(newPost);
-    fixture.detectChanges(); // Update the view
+    fixture.detectChanges();
 
     expect(component.posts).toContain(newPost);
     expect(component.filteredPosts).toContain(newPost);

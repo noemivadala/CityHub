@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
-  let httpMock: HttpTestingController;
+  let httpTestingController: HttpTestingController;
   let authService: AuthService;
 
   beforeEach(() => {
@@ -13,11 +13,11 @@ describe('AuthService', () => {
     });
 
     authService = TestBed.inject(AuthService);
-    httpMock = TestBed.inject(HttpTestingController);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify();
+    httpTestingController.verify();
   });
 
   it('should save and retrieve token correctly', () => {
@@ -50,7 +50,7 @@ describe('AuthService', () => {
       expect(response).toBeTrue();
     });
   
-    const req = httpMock.expectOne(request =>
+    const req = httpTestingController.expectOne(request =>
       request.url === 'https://gorest.co.in/public/v2/users' &&
       request.params.get('access-token') === validToken
     );
@@ -68,7 +68,7 @@ describe('AuthService', () => {
       expect(response).toBeFalse();
     });
 
-    const req = httpMock.expectOne((request) => 
+    const req = httpTestingController.expectOne((request) => 
       request.url === 'https://gorest.co.in/public/v2/users' &&
       request.params.get('access-token') === invalidToken
     );

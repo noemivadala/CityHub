@@ -9,7 +9,7 @@ describe('SearchComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, SearchComponent] // Importa il componente standalone
+      imports: [FormsModule, SearchComponent]
     });
 
     fixture = TestBed.createComponent(SearchComponent);

@@ -4,7 +4,7 @@ import { of, throwError } from 'rxjs';
 import { AddUsersComponent } from './add-users.component';
 import { GorestService } from '../../service/gorest.service';
 
-// Mock data
+// data
 const mockUser = { id: 1, name: 'John Doe', email: 'john.doe@example.com', gender: 'Male', status: 'Active' };
 
 describe('AddUsersComponent', () => {
@@ -18,7 +18,7 @@ describe('AddUsersComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         FormsModule,
-        AddUsersComponent // Importa il componente standalone direttamente qui
+        AddUsersComponent
       ],
       providers: [
         { provide: GorestService, useValue: goRestServiceSpy }

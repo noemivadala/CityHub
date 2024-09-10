@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AuthService } from '../../service/auth.service';
-import { RouterTestingModule } from '@angular/router/testing';
 import LoginComponent from './login.component';
 
 describe('LoginComponent', () => {
@@ -19,7 +18,7 @@ describe('LoginComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, CommonModule, HttpClientTestingModule, RouterTestingModule.withRoutes([]), LoginComponent],
+      imports: [FormsModule, CommonModule, HttpClientTestingModule, LoginComponent],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
         { provide: Router, useValue: routerSpy }
